@@ -56,6 +56,7 @@ public class InventoryUI : MonoBehaviour
     {
         UpdateUI();
         CheckInventoryFull();
+
     }
 
     public void UpdateUI()
@@ -72,6 +73,7 @@ public class InventoryUI : MonoBehaviour
         item10Text.text = inventorySystem.item10.ToString();
         item11Text.text = inventorySystem.item11.ToString();
         item12Text.text = inventorySystem.item12.ToString();
+
         
         currentAmountOfItems.text = inventorySystem.currentTotalItems.ToString();
         maxTotalItems.text = inventorySystem.maxTotalItems.ToString();
@@ -138,3 +140,4 @@ public class InventoryUI : MonoBehaviour
         ResetTextColors(true);
     }
 }
+
