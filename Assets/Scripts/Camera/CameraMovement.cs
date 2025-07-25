@@ -50,6 +50,7 @@ public class CameraMovement : MonoBehaviour
         //    rotationDirection = 7;
         //targetRotation = transform.rotation * Quaternion.Euler(Vector3.up * rotationDirection * rotationSpeed);
 
+
         transform.position += (transform.forward * input.y + transform.right * input.x) * speed * Time.deltaTime;
 
         transform.position = new Vector3(

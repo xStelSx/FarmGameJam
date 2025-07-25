@@ -6,7 +6,7 @@ using TMPro;
 
 public class GlobalTimer : MonoBehaviour
 {
- 
+
     [SerializeField] private float startTimerTime;
     [SerializeField] public bool isRunning = true;
     [SerializeField] private float currentTimerTime;
@@ -19,12 +19,15 @@ public class GlobalTimer : MonoBehaviour
 
     private bool isExportOnCooldown = false;
 
+
     void Start()
     {
 
-        //подписать ресуры к кнопке
+        //ГЇГ®Г¤ГЇГЁГ±Г ГІГј Г°ГҐГ±ГіГ°Г» ГЄ ГЄГ­Г®ГЇГЄГҐ
         startTimerTime = Time.time;
+
         exportButton.onClick.AddListener(ExportButtonClick);
+
     }
 
 
@@ -36,27 +39,34 @@ public class GlobalTimer : MonoBehaviour
 
 
 
+
+
     }
 
     public void StopTimer()
     {
+
         if (PausePanel != null)
         {
             PausePanel.SetActive(true);
         }
+
         isRunning = false;
         Time.timeScale = 0f;
     }
 
     public void ResumeTimer()
     {
+
         if (PausePanel != null)
         {
             PausePanel.SetActive(false);
         }
+
         Time.timeScale = 1f;
         isRunning = true;   
     }
+
 
     public void ExportButtonClick()
     {
@@ -80,6 +90,7 @@ public class GlobalTimer : MonoBehaviour
         yield return new WaitForSeconds(exportCooldown);
         exportButton.gameObject.SetActive(true);
         isExportOnCooldown = false;
+
     }
 
     private void ClearInventory()
