@@ -11,10 +11,12 @@ public class QuestDataBase : ScriptableObject
     public List<QuestData> questStructures;
 
 
+
     public QuestData GetQuestWithID(int id)
     {
         return questStructures.FirstOrDefault(questStructureData => questStructureData.questId == id);
     }
+
 }
 
 [Serializable]

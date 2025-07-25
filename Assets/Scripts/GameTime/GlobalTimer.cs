@@ -6,6 +6,7 @@ using TMPro;
 
 public class GlobalTimer : MonoBehaviour
 {
+
     //[SerializeField] private TextMeshProUGUI globalTimerText;
     [SerializeField] private float startTimerTime;
     [SerializeField] public bool isRunning = true;
@@ -15,13 +16,16 @@ public class GlobalTimer : MonoBehaviour
     [SerializeField] private GameObject PausePanel;
 
     private bool isExportOnCooldown = false;
+
     // Start is called before the first frame update
     void Start()
     {
 
-        //ïîäïèñàòü ðåñóðû ê êíîïêå
+        //Ã¯Ã®Ã¤Ã¯Ã¨Ã±Ã Ã²Ã¼ Ã°Ã¥Ã±Ã³Ã°Ã» Ãª ÃªÃ­Ã®Ã¯ÃªÃ¥
         startTimerTime = Time.time;
+
         exportButton.onClick.AddListener(ExportButtonClick);
+
     }
 
     // Update is called once per frame
@@ -31,29 +35,36 @@ public class GlobalTimer : MonoBehaviour
         int timerMinutes = (int) currentTimerTime / 60;
         int timerSeconds = (int) currentTimerTime % 60;
 
+
         //globalTimerText.text = $"{timerMinutes:00}:{timerSeconds:00}";
+
 
     }
 
     public void StopTimer()
     {
+
         if (PausePanel != null)
         {
             PausePanel.SetActive(true);
         }
+
         isRunning = false;
         Time.timeScale = 0f;
     }
 
     public void ResumeTimer()
     {
+
         if (PausePanel != null)
         {
             PausePanel.SetActive(false);
         }
+
         Time.timeScale = 1f;
         isRunning = true;   
     }
+
 
     public void ExportButtonClick()
     {
@@ -70,5 +81,6 @@ public class GlobalTimer : MonoBehaviour
         yield return new WaitForSeconds(exportCooldown);
         exportButton.gameObject.SetActive(true);
         isExportOnCooldown = false;
+
     }
 }
