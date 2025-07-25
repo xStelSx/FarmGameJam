@@ -10,16 +10,11 @@ public class QuestDataBase : ScriptableObject
 {
     public List<QuestData> questStructures;
 
-    // Start is called before the first frame update
-    void Start()
+
+
+    public QuestData GetQuestWithID(int id)
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        return questStructures.FirstOrDefault(questStructureData => questStructureData.questId == id);
     }
 
 }
