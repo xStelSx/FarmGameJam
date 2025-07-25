@@ -41,14 +41,14 @@ public class CameraMovement : MonoBehaviour
 
     void Update()
     {
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-        input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        int rotationDirection = 0;
-        if (scroll < 0)
-            rotationDirection = -7;
-        if (scroll > 0)
-            rotationDirection = 7;
-        targetRotation = transform.rotation * Quaternion.Euler(Vector3.up * rotationDirection * rotationSpeed);
+        //float scroll = Input.GetAxis("Mouse ScrollWheel");
+        //input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        //int rotationDirection = 0;
+        //if (scroll < 0)
+        //    rotationDirection = -7;
+        //if (scroll > 0)
+        //    rotationDirection = 7;
+        //targetRotation = transform.rotation * Quaternion.Euler(Vector3.up * rotationDirection * rotationSpeed);
 
         transform.position += (transform.forward * input.y + transform.right * input.x) * speed * Time.deltaTime;
 

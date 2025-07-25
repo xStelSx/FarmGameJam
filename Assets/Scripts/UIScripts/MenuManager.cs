@@ -5,6 +5,7 @@ using UnityEngine;
 public class MenuManager : MonoBehaviour
 {
     public GameObject PausePanel;
+    public GlobalTimer globalTimer;
 
     void Start()
     {
@@ -22,6 +23,8 @@ public class MenuManager : MonoBehaviour
         {
         PausePanel.SetActive(true);
         }
+        globalTimer.isRunning = false;
+        Time.timeScale = 0f;
     }
 
     public void OnContinueButtonClick()
@@ -30,6 +33,9 @@ public class MenuManager : MonoBehaviour
         {
             PausePanel.SetActive(false);
         }
+        Time.timeScale = 1f;
+        globalTimer.isRunning = true;
+        
     }
 }
 
