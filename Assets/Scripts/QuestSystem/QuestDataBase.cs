@@ -30,6 +30,7 @@ public class QuestData
 public class SegmentRequirement
 {
     public int segmentId;
+    public Sprite segmentImage;
     public int quantityResourse;
 }
 

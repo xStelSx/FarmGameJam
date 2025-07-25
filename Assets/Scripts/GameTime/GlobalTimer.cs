@@ -6,16 +6,19 @@ using TMPro;
 
 public class GlobalTimer : MonoBehaviour
 {
-    //[SerializeField] private TextMeshProUGUI globalTimerText;
+ 
     [SerializeField] private float startTimerTime;
     [SerializeField] public bool isRunning = true;
     [SerializeField] private float currentTimerTime;
-    [SerializeField] private Button exportButton;
-    [SerializeField] private float exportCooldown = 10f;
+    [SerializeField] public Button exportButton;
+    [SerializeField] public float exportCooldown = 10f;
     [SerializeField] private GameObject PausePanel;
+    [SerializeField] public InventorySystem inventorySystem;
+
+    [SerializeField] public QuestManager questManager;
 
     private bool isExportOnCooldown = false;
-    // Start is called before the first frame update
+
     void Start()
     {
 
@@ -24,14 +27,14 @@ public class GlobalTimer : MonoBehaviour
         exportButton.onClick.AddListener(ExportButtonClick);
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         currentTimerTime = Time.time - startTimerTime;
         int timerMinutes = (int) currentTimerTime / 60;
         int timerSeconds = (int) currentTimerTime % 60;
 
-        //globalTimerText.text = $"{timerMinutes:00}:{timerSeconds:00}";
+
 
     }
 
@@ -59,10 +62,17 @@ public class GlobalTimer : MonoBehaviour
     {
         if (isExportOnCooldown) return;
 
-        exportButton.gameObject.SetActive(false);
-        isExportOnCooldown = true;
+        bool questCompleted = questManager.TryCompleteCurrentQuest();
 
-        StartCoroutine(ExportCooldownRoutine());
+
+        if (questCompleted)
+        {
+            exportButton.gameObject.SetActive(false);
+            isExportOnCooldown = true;
+            StartCoroutine(ExportCooldownRoutine());
+        }
+
+        ClearInventory();
     }
 
     private IEnumerator ExportCooldownRoutine()
@@ -70,5 +80,32 @@ public class GlobalTimer : MonoBehaviour
         yield return new WaitForSeconds(exportCooldown);
         exportButton.gameObject.SetActive(true);
         isExportOnCooldown = false;
+    }
+
+    private void ClearInventory()
+    {
+        if (inventorySystem != null)
+        {
+            
+            inventorySystem.item1 = 0;
+            inventorySystem.item2 = 0;
+            inventorySystem.item3 = 0;
+            inventorySystem.item4 = 0;
+            inventorySystem.item5 = 0;
+            inventorySystem.item6 = 0;
+            inventorySystem.item7 = 0;
+            inventorySystem.item8 = 0;
+            inventorySystem.item9 = 0;
+            inventorySystem.item10 = 0;
+            inventorySystem.item11 = 0;
+            inventorySystem.item12 = 0;
+
+          
+            inventorySystem.SyncDictionaryWithUI();
+        }
+        else
+        {
+            Debug.LogWarning("InventorySystem reference not set in GlobalTimer!");
+        }
     }
 }
