@@ -11,7 +11,7 @@ public class GlobalTimer : MonoBehaviour
     [SerializeField] public bool isRunning = true;
     [SerializeField] private float currentTimerTime;
     [SerializeField] public Button exportButton;
-    [SerializeField] public float exportCooldown = 10f;
+    [SerializeField] public float exportCooldown = 4f;
     [SerializeField] private GameObject PausePanel;
     [SerializeField] public InventorySystem inventorySystem;
 
