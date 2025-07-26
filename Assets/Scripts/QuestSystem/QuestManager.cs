@@ -52,7 +52,7 @@ public class QuestManager : MonoBehaviour
             Debug.Log("All quests completed!");
             return;
         }
-
+        SoundManager.Instance.Play("NewQuestAdded");
         currentQuest = questDatabase.questStructures[currentQuestIndex];
         currentProgress = new QuestProgress(currentQuest, inventorySystem);
         attemptsToComplete = currentQuest.attempsToComplete;
@@ -144,7 +144,7 @@ public class QuestManager : MonoBehaviour
         {
             inventorySystem.RemoveItem(requirement.segmentId, requirement.quantityResourse);
         }
-
+        SoundManager.Instance.Play("QuestComplete");
         currentQuestIndex++;
         StartNextQuest();
         Debug.Log("молодец сделал!");

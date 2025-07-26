@@ -85,12 +85,14 @@ public class InventoryUI : MonoBehaviour
 
         if (isFull && !isBlinking)
         {
+            SoundManager.Instance.Play("InventoryFull");
             isBlinking = true;
             if (blinkCoroutine != null) StopCoroutine(blinkCoroutine);
             blinkCoroutine = StartCoroutine(BlinkText());
         }
         else if (!isFull && isBlinking)
         {
+            SoundManager.Instance.Stop("InventoryFull");
             isBlinking = false;
             if (blinkCoroutine != null)
             {
