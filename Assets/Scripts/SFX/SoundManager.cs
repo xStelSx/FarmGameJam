@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,7 +20,6 @@ public class SoundManager : MonoBehaviour
 
     private void Awake()
     {
- 
         if (Instance == null)
         {
             Instance = this;
@@ -33,7 +31,6 @@ public class SoundManager : MonoBehaviour
             return;
         }
 
-
         foreach (Sound s in sounds)
         {
             s.source = gameObject.AddComponent<AudioSource>();
@@ -44,7 +41,12 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-  
+    // Новый метод для доступа к звукам
+    public List<Sound> GetSounds()
+    {
+        return sounds;
+    }
+
     public void Play(string soundName)
     {
         Sound s = sounds.Find(sound => sound.name == soundName);
@@ -66,5 +68,4 @@ public class SoundManager : MonoBehaviour
         }
         s.source.Stop();
     }
-
 }
