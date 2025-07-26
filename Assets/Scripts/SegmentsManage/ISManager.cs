@@ -11,7 +11,7 @@ public class InterfaceSegments
     public GameObject Prefab;
 }
 
-public class InventoryManager : MonoBehaviour
+public class ISManager : MonoBehaviour
 {
     public List<InterfaceSegments> Segments = new List<InterfaceSegments>();
 }
