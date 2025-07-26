@@ -37,14 +37,26 @@ public class QuestManager : MonoBehaviour
     private QuestProgress currentProgress;
 
 
-    [SerializeField] private Animator gameOverAnimator;
+    public GameObject restartPanel;
+
+    public Animator transition;
+
+    public float animationRestartCooldown = 1f;
+
     [SerializeField] private float animationDelay = 0.5f;
 
 
     public int attemptsToComplete = 0;
 
+    public GameObject attempt1;
+    public GameObject attempt2;
+    public GameObject attempt3;
+    public GameObject attempt4;
+
     private void Awake()
     {
+        Time.timeScale = 1f;
+        transition.SetTrigger("TriggerRestart2");
         exportButton.onClick.AddListener(CompleteCurrentQuest);
         StartNextQuest();
 
@@ -70,18 +82,11 @@ public class QuestManager : MonoBehaviour
             if (winnerObject != null)
             {
                 questsPackage.SetActive(false);
+                transition.SetTrigger("Start");
 
-                if (gameOverAnimator != null)
-                {
-                    winnerObject.SetActive(true);
-                    gameOverAnimator.SetTrigger("Show");
-                    StartCoroutine(EnableButtonAfterAnimation(winnerButton, gameOverAnimator));
-                }
-                else
-                {
-                    winnerObject.SetActive(true);
+                winnerObject.SetActive(true);
                     winnerButton.gameObject.SetActive(true);
-                }
+              
 
                 if (winnerText != null)
                 {
@@ -193,7 +198,8 @@ public class QuestManager : MonoBehaviour
             Debug.Log("не сделал условие");
             if (attemptsToComplete <= 0)
             {
-                HandleFailedQuest();
+                StartCoroutine(CarExportTimer());
+                //HandleFailedQuest();
             }
             return false;
             //Debug.Log("Quest requirements not met! Current progress:");
@@ -219,22 +225,16 @@ public class QuestManager : MonoBehaviour
 
     private void HandleFailedQuest()
     {
+        SoundManager.Instance.Play("Lose");
+        //Time.timeScale = 0f;
         Debug.Log("GAME OVER NAHER");
-
         // Активируем Game Over объект
         if (gameOverObject != null)
         {
-            if (gameOverAnimator != null)
-            {
-                gameOverObject.SetActive(true);
-                gameOverAnimator.SetTrigger("Show");
-                StartCoroutine(EnableButtonAfterAnimation(restartButton, gameOverAnimator));
-            }
-            else
-            {
-                gameOverObject.SetActive(true);
-                restartButton.gameObject.SetActive(true);
-            }
+            transition.SetTrigger("Start");
+            gameOverObject.SetActive(true);
+            restartButton.gameObject.SetActive(true);
+
 
             // Устанавливаем текст с информацией о текущем квесте
             if (gameOverText != null)
@@ -257,11 +257,38 @@ public class QuestManager : MonoBehaviour
         }
     }
 
+
+    public void GameendAnimStart()
+    {
+        //вот твоя строчка кода для запуска анимации конца игры
+        transition.SetTrigger("Start");
+    }
     public void RestartScene()
     {
+        restartPanel.SetActive(true);
+        transition.SetTrigger("TriggerStart");
+        StartCoroutine(RestartAnimationCooldown());
+        //SoundManager.Instance.Play("ButtonClick");
+        //UnityEngine.SceneManagement.SceneManager.LoadScene(
+        //    UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+    }
+
+
+    private IEnumerator RestartAnimationCooldown()
+    {
+        yield return new WaitForSeconds(animationRestartCooldown);
         SoundManager.Instance.Play("ButtonClick");
         UnityEngine.SceneManagement.SceneManager.LoadScene(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+        yield return new WaitForSeconds(animationRestartCooldown);
+        restartPanel.SetActive(false);
+
+    }
+
+    private IEnumerator CarExportTimer()
+    {
+        yield return new WaitForSeconds(2f);
+        HandleFailedQuest();
     }
 
     private void Update()
@@ -273,6 +300,32 @@ public class QuestManager : MonoBehaviour
         //        AddProgress(currentQuest.segmentRequirements[0].segmentId, 1);
         //    }
         //}
+
+        //МЕНЯ ЗАСТАВИЛИ ЭТО НЕ Я ПИСАЛ!!!!
+        if (attemptsToComplete == 4)
+        {
+            attempt1.SetActive(true);
+            attempt2.SetActive(true);
+            attempt3.SetActive(true);
+            attempt4.SetActive(true);
+        }
+        if (attemptsToComplete == 3)
+        {
+            attempt4.SetActive(false);
+        }
+        if (attemptsToComplete == 2)
+        {
+            attempt3.SetActive(false);
+        }
+        if (attemptsToComplete == 1)
+        {
+            attempt2.SetActive(false);
+        }
+        if (attemptsToComplete == 0)
+        {
+            attempt1.SetActive(false);
+        }
+
     }
 }
 
