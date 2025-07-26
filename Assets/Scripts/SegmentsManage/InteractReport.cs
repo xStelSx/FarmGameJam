@@ -16,6 +16,8 @@ public class InteractReport : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+
+        Debug.Log($"ID поля = {ID}");
         if (placeManager != null)
         {
             placeManager.ReceiveMessage(ID);

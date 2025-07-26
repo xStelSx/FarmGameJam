@@ -10,7 +10,9 @@ public class PlaceManager : MonoBehaviour
     private int ID_SegmentOnPlace;
     private int ID_SegmentOnMarket;
 
-    public GameObject[] SegmentsPrefabPlace= new GameObject[6];
+    public GameObject baseSegmentPrefab;
+
+    public GameObject[] SegmentsPrefabPlace = new GameObject[6];
 
     private int?[] segmentArray = new int?[6];
 
@@ -64,6 +66,7 @@ public class PlaceManager : MonoBehaviour
 
         if (segmentArray[ID_SegmentOnPlace] != null)
         {
+            SetBasePrefab();
             segmentArray[ID_SegmentOnPlace] = null;
             Debug.Log($"клетка {ID_SegmentOnPlace} стала свободной");
         }
@@ -74,32 +77,52 @@ public class PlaceManager : MonoBehaviour
 
     public void Replacement()
     {
-        // Проверяем, что индекс находится в пределах массива
-        if (ID_SegmentOnPlace >= 0 && ID_SegmentOnPlace < SegmentsPrefabPlace.Length)
+
+        if (segmentArray[ID_SegmentOnPlace] != null)
         {
-            // Проверяем, что сегмент на месте не пуст
-            if (segmentArray[ID_SegmentOnPlace] != null)
+            // Удаляем старый префаб, если он существует
+            if (SegmentsPrefabPlace[ID_SegmentOnPlace] != null)
             {
-                // Удаляем старый префаб, если он существует
-                if (SegmentsPrefabPlace[ID_SegmentOnPlace] != null)
-                {
-                    Destroy(SegmentsPrefabPlace[ID_SegmentOnPlace]);
-                }
+                Destroy(SegmentsPrefabPlace[ID_SegmentOnPlace]);
             }
-            // Получаем префаб из списка Segments по ID_SegmentOnMarket
-            InterfaceSegments segment = FindObjectOfType<InventoryManager>().Segments[ID_SegmentOnMarket];
-            // Создаем новый префаб на позиции ID_SegmentOnPlace
-            GameObject newSegmentPrefab = Instantiate(segment.Prefab, SegmentsPrefabPlace[ID_SegmentOnPlace].transform.position, Quaternion.identity);
-            // Сохраняем новый префаб в массиве
-            SegmentsPrefabPlace[ID_SegmentOnPlace] = newSegmentPrefab;
-            // Обновляем массив segmentArray
-            segmentArray[ID_SegmentOnPlace] = ID_SegmentOnMarket;
-            Debug.Log($"На клетку {ID_SegmentOnPlace} установлен новый префаб {ID_SegmentOnMarket}");
         }
-        else
+        // Получаем префаб из списка Segments по ID_SegmentOnMarket
+        InterfaceSegments segment = FindObjectOfType<ISManager>().Segments[ID_SegmentOnMarket];
+        // Создаем новый префаб на позиции ID_SegmentOnPlace
+        GameObject newSegmentPrefab = Instantiate(segment.Prefab, SegmentsPrefabPlace[ID_SegmentOnPlace].transform.position, Quaternion.identity);
+
+        Transform firstChild = newSegmentPrefab.transform.GetChild(0);
+        InteractReport interactReport = firstChild.GetComponent<InteractReport>();
+        interactReport.ID = ID_SegmentOnPlace;
+
+
+        // Сохраняем новый префаб в массиве
+        SegmentsPrefabPlace[ID_SegmentOnPlace] = newSegmentPrefab;
+        // Обновляем массив segmentArray
+        segmentArray[ID_SegmentOnPlace] = ID_SegmentOnMarket;
+
+        Debug.Log($"На клетку {ID_SegmentOnPlace} установлен новый префаб {ID_SegmentOnMarket}");
+    }
+
+
+
+    public void SetBasePrefab()
+    {
+        if (SegmentsPrefabPlace[ID_SegmentOnPlace] != null)
         {
-            Debug.LogWarning($"Индекс {ID_SegmentOnPlace} вне диапазона массива.");
+            // Удаляем старый префаб, если он существует
+            Destroy(SegmentsPrefabPlace[ID_SegmentOnPlace]);
         }
+        // Создаем новый базовый префаб на позиции ID_SegmentOnPlace
+        GameObject newBaseSegmentPrefab = Instantiate(baseSegmentPrefab, SegmentsPrefabPlace[ID_SegmentOnPlace].transform.position, Quaternion.identity);
+        Transform firstChild = newBaseSegmentPrefab.transform.GetChild(0);
+        InteractReport interactReport = firstChild.GetComponent<InteractReport>();
+        interactReport.ID = ID_SegmentOnPlace;
+        // Сохраняем новый базовый префаб в массиве
+        SegmentsPrefabPlace[ID_SegmentOnPlace] = newBaseSegmentPrefab;
+        // Обновляем массив segmentArray
+        segmentArray[ID_SegmentOnPlace] = null; // Или любое другое значение, которое вам нужно
+        Debug.Log($"На клетку {ID_SegmentOnPlace} установлен базовый префаб");
     }
 
 }

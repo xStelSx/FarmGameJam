@@ -3,43 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class MarketInventory : MonoBehaviour
 {
-    private InventoryManager inventoryManager;
+    private ISManager iSManager;
     public GameObject ItemsPanel;
     public GameObject itemIconPrefab;
     private List<GameObject> itemIcons = new List<GameObject>();
 
     void Start()
     {
-        inventoryManager = FindObjectOfType<InventoryManager>();
+        iSManager = FindObjectOfType<ISManager>();
         UpdateInventoryUI();
     }
 
     public void UpdateInventoryUI()
     {
-        if (inventoryManager.Segments.Count > 0)
+        if (iSManager.Segments.Count > 0)
         {
             foreach (Transform child in ItemsPanel.transform)
             {
                 Destroy(child.gameObject);
             }
-            for (int i = 0; i < inventoryManager.Segments.Count; i++)
+            for (int i = 0; i < iSManager.Segments.Count; i++)
             {
-                var segment = inventoryManager.Segments[i];
+                var segment = iSManager.Segments[i];
 
                 GameObject itemIcon = Instantiate(itemIconPrefab, ItemsPanel.transform);
 
                 itemIcons.Add(itemIcon);
 
                 Image iconImage = itemIcon.transform.Find("Icon").GetComponent<Image>();
-                Text priceText = itemIcon.transform.Find("Price").GetComponent<Text>();
+                TMP_Text priceText = itemIcon.transform.Find("Price").GetComponent<TMP_Text>();
 
                 ItemIconHandler iconHandler = itemIcon.GetComponent<ItemIconHandler>();
 
                 iconImage.sprite = segment.Icon;
-                //priceText.text = segment.Price.ToString(); 
+                priceText.text = segment.Price.ToString(); 
 
                 iconHandler.itemIndex = i;
             }

@@ -67,6 +67,7 @@ public class GlobalTimer : MonoBehaviour
 
     public void ExportButtonClick()
     {
+        SoundManager.Instance.Play("ExportCar");
         if (isExportOnCooldown) return;
 
         bool questCompleted = questManager.TryCompleteCurrentQuest();
