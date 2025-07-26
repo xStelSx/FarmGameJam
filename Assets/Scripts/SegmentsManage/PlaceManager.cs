@@ -12,9 +12,9 @@ public class PlaceManager : MonoBehaviour
 
     public GameObject baseSegmentPrefab;
 
-    public GameObject[] SegmentsPrefabPlace = new GameObject[6];
+    public GameObject[] SegmentsPrefabPlace = new GameObject[36];
 
-    private int?[] segmentArray = new int?[6];
+    private int?[] segmentArray = new int?[36];
 
     void Start()
     {
