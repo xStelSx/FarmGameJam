@@ -17,13 +17,14 @@ public class GlobalTimer : MonoBehaviour
 
     [SerializeField] public QuestManager questManager;
 
-    private bool isExportOnCooldown = false;
+    [SerializeField] private MoneyManager moneyManager;
+
+    public bool isExportOnCooldown = false;
 
 
     void Start()
     {
 
-        //ïîäïèñàòü ðåñóðû ê êíîïêå
         startTimerTime = Time.time;
 
         exportButton.onClick.AddListener(ExportButtonClick);
@@ -34,12 +35,8 @@ public class GlobalTimer : MonoBehaviour
     void Update()
     {
         currentTimerTime = Time.time - startTimerTime;
-        int timerMinutes = (int) currentTimerTime / 60;
-        int timerSeconds = (int) currentTimerTime % 60;
-
-
-
-
+        int timerMinutes = (int)currentTimerTime / 60;
+        int timerSeconds = (int)currentTimerTime % 60;
 
     }
 
@@ -64,7 +61,7 @@ public class GlobalTimer : MonoBehaviour
         }
 
         Time.timeScale = 1f;
-        isRunning = true;   
+        isRunning = true;
     }
 
 
@@ -75,12 +72,13 @@ public class GlobalTimer : MonoBehaviour
         bool questCompleted = questManager.TryCompleteCurrentQuest();
 
 
-        if (questCompleted)
-        {
-            exportButton.gameObject.SetActive(false);
-            isExportOnCooldown = true;
-            StartCoroutine(ExportCooldownRoutine());
-        }
+        //if (questCompleted)
+        //{
+        moneyManager.CalculateExportProfit();
+        exportButton.gameObject.SetActive(false);
+        isExportOnCooldown = true;
+        StartCoroutine(ExportCooldownRoutine());
+        //}
 
         ClearInventory();
     }
@@ -97,7 +95,7 @@ public class GlobalTimer : MonoBehaviour
     {
         if (inventorySystem != null)
         {
-            
+
             inventorySystem.item1 = 0;
             inventorySystem.item2 = 0;
             inventorySystem.item3 = 0;
@@ -111,12 +109,12 @@ public class GlobalTimer : MonoBehaviour
             inventorySystem.item11 = 0;
             inventorySystem.item12 = 0;
 
-          
+
             inventorySystem.SyncDictionaryWithUI();
         }
         else
         {
-            Debug.LogWarning("InventorySystem reference not set in GlobalTimer!");
+            
         }
     }
 }
