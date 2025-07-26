@@ -6,7 +6,7 @@ using UnityEngine;
 public class MoneyManager : MonoBehaviour
 {
     [Header("Money Settings")]
-    [SerializeField] private int currentMoney = 0; 
+    public int currentMoney = 0; 
     [SerializeField] private TextMeshProUGUI moneyText; 
 
     [Header("Item Prices")]
@@ -57,7 +57,7 @@ public class MoneyManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Денег нет!");
+            Debug.LogWarning("пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ!");
             return false;
         }
     }
