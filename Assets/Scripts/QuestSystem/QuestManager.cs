@@ -52,7 +52,7 @@ public class QuestManager : MonoBehaviour
             Debug.Log("All quests completed!");
             return;
         }
-        SoundManager.Instance.Play("NewQuestAdded");
+        //SoundManager.Instance.Play("NewQuestAdded");
         currentQuest = questDatabase.questStructures[currentQuestIndex];
         currentProgress = new QuestProgress(currentQuest, inventorySystem);
         attemptsToComplete = currentQuest.attempsToComplete;
