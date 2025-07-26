@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
+using System;
 
 public class InventorySystem : MonoBehaviour
 {
@@ -23,6 +26,11 @@ public class InventorySystem : MonoBehaviour
 
     private Dictionary<int, int> itemQuantities = new Dictionary<int, int>();
     public int currentTotalItems = 0;
+
+    [SerializeField] private Button exportButton;
+    //[SerializeField] private GlobalTimer globalTimer;
+
+    public event Action OnInventoryChanged;
 
     private void Awake()
     {
@@ -55,6 +63,7 @@ public class InventorySystem : MonoBehaviour
         itemQuantities[12] = item12;
 
         CalculateTotalItems();
+        OnInventoryChanged?.Invoke();
     }
 
     private void SyncUIWithDictionary()
@@ -86,39 +95,37 @@ public class InventorySystem : MonoBehaviour
     {
         if (segmentId < 1 || segmentId > 12)
         {
-            Debug.LogWarning($"Invalid segmentId: {segmentId}. Must be between 1 and 12.");
             return false;
         }
 
         if (currentTotalItems + amount > maxTotalItems)
         {
-            Debug.LogWarning($"Inventory is full! ({currentTotalItems}/{maxTotalItems})");
             return false;
         }
 
         itemQuantities[segmentId] += amount;
         currentTotalItems += amount;
         SyncUIWithDictionary();
+        OnInventoryChanged?.Invoke();
         return true;
     }
 
     public bool RemoveItem(int segmentId, int amount)
     {
         if (segmentId < 1 || segmentId > 12)
-        {
-            Debug.LogWarning($"Invalid segmentId: {segmentId}. Must be between 1 and 12.");
+        {  
             return false;
         }
 
         if (itemQuantities[segmentId] < amount)
         {
-            Debug.LogWarning($"Not enough items {segmentId} in inventory! ({itemQuantities[segmentId]}/{amount})");
             return false;
         }
 
         itemQuantities[segmentId] -= amount;
         currentTotalItems -= amount;
         SyncUIWithDictionary();
+        OnInventoryChanged?.Invoke();
         return true;
     }
 
@@ -143,6 +150,19 @@ public class InventorySystem : MonoBehaviour
         return maxTotalItems;
     }
 
+    //public void HideExportButton()
+    //{
+    //    if (currentTotalItems < 1 || globalTimer.isExportOnCooldown)
+    //    {
+    //        exportButton.gameObject.SetActive(false);
+    //    }
+
+    //    if (currentTotalItems > 0 && !globalTimer.isExportOnCooldown)
+    //    {
+    //        exportButton.gameObject.SetActive(true);
+    //    }
+    //}
+
     private void Update()
     {
         for (KeyCode key = KeyCode.Alpha1; key <= KeyCode.Alpha9; key++)
@@ -154,8 +174,26 @@ public class InventorySystem : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Q)) AddItem(10, 1);
-        if (Input.GetKeyDown(KeyCode.W)) AddItem(11, 1);
-        if (Input.GetKeyDown(KeyCode.E)) AddItem(12, 1);
+        if (Input.GetKeyDown(KeyCode.Q)) AddItem(1, 1);
+        if (Input.GetKeyDown(KeyCode.W)) AddItem(2, 1);
+        if (Input.GetKeyDown(KeyCode.E)) AddItem(3, 1);
+        if (Input.GetKeyDown(KeyCode.R)) AddItem(4, 1);
+        if (Input.GetKeyDown(KeyCode.T)) AddItem(5, 1);
+        if (Input.GetKeyDown(KeyCode.Y)) AddItem(6, 1);
+        if (Input.GetKeyDown(KeyCode.U)) AddItem(7, 1);
+        if (Input.GetKeyDown(KeyCode.I)) AddItem(8, 1);
+        if (Input.GetKeyDown(KeyCode.O)) AddItem(9, 1);
+        if (Input.GetKeyDown(KeyCode.A)) AddItem(10, 1);
+        if (Input.GetKeyDown(KeyCode.S)) AddItem(11, 1);
+        if (Input.GetKeyDown(KeyCode.D)) AddItem(12, 1);
+
+        if(currentTotalItems == 0)
+        {
+            exportButton.interactable = false;
+        }
+        else
+        {
+            exportButton.interactable = true;
+        }
     }
 }

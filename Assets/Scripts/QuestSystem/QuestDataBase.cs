@@ -25,6 +25,8 @@ public class QuestData
 {
     public int questId;
     public List<SegmentRequirement> segmentRequirements;
+    public int moneyReward;
+    public int attempsToComplete;
 }
 
 [Serializable]

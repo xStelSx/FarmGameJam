@@ -18,11 +18,15 @@ MonoBehaviour:
     - segmentId: 7
       segmentImage: {fileID: 21300000, guid: b286ea4e4b446c548a6cbf7192e7b173, type: 3}
       quantityResourse: 5
+    moneyReward: 100
+    attempsToComplete: 4
   - questId: 2
     segmentRequirements:
     - segmentId: 5
       segmentImage: {fileID: 21300000, guid: 83925e8aea6d8ba48b91e00901bf7081, type: 3}
       quantityResourse: 7
+    moneyReward: 0
+    attempsToComplete: 0
   - questId: 3
     segmentRequirements:
     - segmentId: 0
@@ -31,6 +35,8 @@ MonoBehaviour:
     - segmentId: 0
       segmentImage: {fileID: 0}
       quantityResourse: 0
+    moneyReward: 0
+    attempsToComplete: 0
   - questId: 4
     segmentRequirements:
     - segmentId: 0
@@ -39,6 +45,8 @@ MonoBehaviour:
     - segmentId: 0
       segmentImage: {fileID: 0}
       quantityResourse: 0
+    moneyReward: 0
+    attempsToComplete: 0
   - questId: 5
     segmentRequirements:
     - segmentId: 0
@@ -47,3 +55,5 @@ MonoBehaviour:
     - segmentId: 0
       segmentImage: {fileID: 0}
       quantityResourse: 0
+    moneyReward: 0
+    attempsToComplete: 0
