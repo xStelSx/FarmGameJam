@@ -17,6 +17,7 @@ public class CursorManager : MonoBehaviour
     public void OnButtonCursorEnter()
     {
         Cursor.SetCursor(cursorTexture, normalCursorHotspot, CursorMode.Auto);
+        SoundManager.Instance.Play("OnEnterButton");
     }
 
     public void OnButtonCursorExit()
