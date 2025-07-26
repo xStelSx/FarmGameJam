@@ -35,7 +35,6 @@ public class MenuManager : MonoBehaviour
         }
         Time.timeScale = 1f;
         globalTimer.isRunning = true;
-        
     }
 }
 
