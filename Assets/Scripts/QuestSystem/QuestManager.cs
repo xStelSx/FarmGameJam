@@ -18,10 +18,28 @@ public class QuestManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI attemptsText;
     [SerializeField] private Button exportButton;
 
+
+    [Header("Game Over UI")]
+    [SerializeField] private GameObject gameOverObject;
+    [SerializeField] private TextMeshProUGUI gameOverText;
+    [SerializeField] private Button restartButton;
+
+
+    [Header("Winner UI")]
+    [SerializeField] private GameObject winnerObject;
+    [SerializeField] private TextMeshProUGUI winnerText;
+    [SerializeField] private Button winnerButton;
+    [SerializeField] private GameObject questsPackage;
+
     [SerializeField] private MoneyManager moneyManager;
     private int currentQuestIndex = 0;
-    private QuestData currentQuest;
+    public QuestData currentQuest;
     private QuestProgress currentProgress;
+
+
+    [SerializeField] private Animator gameOverAnimator;
+    [SerializeField] private float animationDelay = 0.5f;
+
 
     public int attemptsToComplete = 0;
 
@@ -49,10 +67,44 @@ public class QuestManager : MonoBehaviour
     {
         if (currentQuestIndex >= questDatabase.questStructures.Count)
         {
+            if (winnerObject != null)
+            {
+                questsPackage.SetActive(false);
+
+                if (gameOverAnimator != null)
+                {
+                    winnerObject.SetActive(true);
+                    gameOverAnimator.SetTrigger("Show");
+                    StartCoroutine(EnableButtonAfterAnimation(winnerButton, gameOverAnimator));
+                }
+                else
+                {
+                    winnerObject.SetActive(true);
+                    winnerButton.gameObject.SetActive(true);
+                }
+
+                if (winnerText != null)
+                {
+                    winnerText.text = currentQuest.questId.ToString();
+
+                    foreach (var req in currentQuest.segmentRequirements)
+                    {
+                        int currentAmount = inventorySystem.GetItemCount(req.segmentId);
+                        //gameOverText.text += $"- Item {req.segmentId}: {currentAmount}/{req.quantityResourse}\n";
+                    }
+                }
+
+
+                if (restartButton != null)
+                {
+                    restartButton.onClick.RemoveAllListeners();
+                    restartButton.onClick.AddListener(RestartScene);
+                }
+            }
             Debug.Log("All quests completed!");
             return;
         }
-        SoundManager.Instance.Play("NewQuestAdded");
+        //SoundManager.Instance.Play("NewQuestAdded");
         currentQuest = questDatabase.questStructures[currentQuestIndex];
         currentProgress = new QuestProgress(currentQuest, inventorySystem);
         attemptsToComplete = currentQuest.attempsToComplete;
@@ -83,6 +135,20 @@ public class QuestManager : MonoBehaviour
         if (currentQuest == null || currentQuest.segmentRequirements.Count == 0) return;
         var firstSegment = currentQuest.segmentRequirements[0];
         resourceAmountText.text = $"{inventorySystem.GetItemCount(firstSegment.segmentId)}/{firstSegment.quantityResourse}";
+    }
+
+    private IEnumerator EnableButtonAfterAnimation(Button button, Animator animator)
+    {
+        // Ждем пока анимация закончится
+        yield return new WaitForSeconds(animationDelay);
+
+        // Дополнительная проверка, если анимация длиннее
+        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
+        {
+            yield return null;
+        }
+
+        button.gameObject.SetActive(true);
     }
 
     public void CompleteCurrentQuest()
@@ -154,8 +220,48 @@ public class QuestManager : MonoBehaviour
     private void HandleFailedQuest()
     {
         Debug.Log("GAME OVER NAHER");
-        //attemptsToComplete = currentQuest.attempsToComplete;
-        UpdateQuestUI();
+
+        // Активируем Game Over объект
+        if (gameOverObject != null)
+        {
+            if (gameOverAnimator != null)
+            {
+                gameOverObject.SetActive(true);
+                gameOverAnimator.SetTrigger("Show");
+                StartCoroutine(EnableButtonAfterAnimation(restartButton, gameOverAnimator));
+            }
+            else
+            {
+                gameOverObject.SetActive(true);
+                restartButton.gameObject.SetActive(true);
+            }
+
+            // Устанавливаем текст с информацией о текущем квесте
+            if (gameOverText != null)
+            {
+                gameOverText.text = currentQuest.questId.ToString();
+
+                foreach (var req in currentQuest.segmentRequirements)
+                {
+                    int currentAmount = inventorySystem.GetItemCount(req.segmentId);
+                    //gameOverText.text += $"- Item {req.segmentId}: {currentAmount}/{req.quantityResourse}\n";
+                }
+            }
+
+            // Активируем кнопку рестарта
+            if (restartButton != null)
+            {
+                restartButton.onClick.RemoveAllListeners();
+                restartButton.onClick.AddListener(RestartScene);
+            }
+        }
+    }
+
+    public void RestartScene()
+    {
+        SoundManager.Instance.Play("ButtonClick");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(
+            UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
     }
 
     private void Update()
