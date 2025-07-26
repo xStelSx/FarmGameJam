@@ -25,6 +25,8 @@ public class QuestData
 {
     public int questId;
     public List<SegmentRequirement> segmentRequirements;
+    public int moneyReward;
+    public int attempsToComplete;
 }
 
 [Serializable]
@@ -32,6 +34,7 @@ public class QuestData
 public class SegmentRequirement
 {
     public int segmentId;
+    public Sprite segmentImage;
     public int quantityResourse;
 }
 
