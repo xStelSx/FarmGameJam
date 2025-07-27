@@ -15,7 +15,9 @@ public class PlaceManager : MonoBehaviour
     public GameObject[] SegmentsPrefabPlace = new GameObject[36];
 
     private int?[] segmentArray = new int?[36];
-    
+
+    public AddItems addItems;
+
 
     void Start()
     {
@@ -108,6 +110,9 @@ public class PlaceManager : MonoBehaviour
         SegmentsPrefabPlace[ID_SegmentOnPlace] = newSegmentPrefab;
         // Обновляем массив segmentArray
         segmentArray[ID_SegmentOnPlace] = ID_SegmentOnMarket;
+
+
+        addItems.activeCollectionItem(ID_SegmentOnMarket);
 
         Debug.Log($"На клетку {ID_SegmentOnPlace} установлен новый префаб {ID_SegmentOnMarket}");
     }
