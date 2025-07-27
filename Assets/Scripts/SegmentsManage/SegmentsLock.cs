@@ -12,12 +12,19 @@ public class SegmentsLock : MonoBehaviour
     public int[] UpgradeMarket;
     public int[] AvailableSlots;
 
+    public GameObject Zabor_1;
+    public GameObject Zabor_2;
+    public GameObject Zabor_3;
+
+    private InventorySystem inventorySystem;
+
     void Start()
     {
         StartCoroutine(DelayedInitialActivation());
         //questManager = FindObjectOfType<QuestManager>();
         //placeManager = FindObjectOfType<PlaceManager>();
         //marketInventory = FindObjectOfType<MarketInventory>();
+        inventorySystem = FindObjectOfType<InventorySystem>();
     }
 
     private IEnumerator DelayedInitialActivation()
@@ -36,19 +43,19 @@ public class SegmentsLock : MonoBehaviour
         {
             if (currentQuestIndex == UpgradePlace[i])
             {
-                if (currentQuestIndex == 0)
-                {
-                    UnLock_SegmentsOnPlace(6);
-                    break;
-                }
-                if (currentQuestIndex == 1)
+                if (i == 1)
                 {
                     UnLock_SegmentsOnPlace(18);
+                    Zabor_1.SetActive(false);
+                    Zabor_2.SetActive(true);
                     break;
                 }
-                if (currentQuestIndex == 2)
+                if (i == 2)
                 {
                     UnLock_SegmentsOnPlace(36);
+                    Zabor_1.SetActive(false);
+                    Zabor_2.SetActive(false);
+                    Zabor_3.SetActive(true);
                     break;
                 }
 
@@ -63,6 +70,17 @@ public class SegmentsLock : MonoBehaviour
                 break;
             }
         }
+
+
+        if (currentQuestIndex == 6)
+        {
+            SizeAmbar(100);
+        }
+        if (currentQuestIndex == 12)
+        {
+            SizeAmbar(250);
+        }
+
     }
 
 
@@ -133,5 +151,11 @@ public class SegmentsLock : MonoBehaviour
         }
     }
 
+
+
+    public void SizeAmbar(int UpgradeAmbar)
+    {
+        inventorySystem.maxTotalItems = UpgradeAmbar;
+    }
 
 }
