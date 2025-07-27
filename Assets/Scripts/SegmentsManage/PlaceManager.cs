@@ -16,7 +16,7 @@ public class PlaceManager : MonoBehaviour
 
     private int?[] segmentArray = new int?[36];
 
-    public AddItems addItems;
+    //public AddItems addItems;
 
 
     void Start()
@@ -112,7 +112,7 @@ public class PlaceManager : MonoBehaviour
         segmentArray[ID_SegmentOnPlace] = ID_SegmentOnMarket;
 
 
-        addItems.activeCollectionItem(ID_SegmentOnMarket);
+        SegmentsPrefabPlace[ID_SegmentOnPlace].GetComponent<AddItems>().activeCollectionItem(ID_SegmentOnMarket);
 
         Debug.Log($"На клетку {ID_SegmentOnPlace} установлен новый префаб {ID_SegmentOnMarket}");
     }
