@@ -22,7 +22,7 @@ public class QuestManager : MonoBehaviour
     [Header("Game Over UI")]
     [SerializeField] private GameObject gameOverObject;
     [SerializeField] private TextMeshProUGUI gameOverText;
-    [SerializeField] private Button restartButton;
+    [SerializeField] public Button restartButton;
 
 
     [Header("Winner UI")]
@@ -56,6 +56,7 @@ public class QuestManager : MonoBehaviour
     private void Awake()
     {
         Time.timeScale = 1f;
+        restartPanel.SetActive(true);
         transition.SetTrigger("TriggerRestart2");
         exportButton.onClick.AddListener(CompleteCurrentQuest);
         StartNextQuest();
@@ -265,8 +266,7 @@ public class QuestManager : MonoBehaviour
     }
     public void RestartScene()
     {
-        restartPanel.SetActive(true);
-        transition.SetTrigger("TriggerStart");
+        transition.SetTrigger("TriggerRestart");
         StartCoroutine(RestartAnimationCooldown());
         //SoundManager.Instance.Play("ButtonClick");
         //UnityEngine.SceneManagement.SceneManager.LoadScene(
@@ -277,11 +277,9 @@ public class QuestManager : MonoBehaviour
     private IEnumerator RestartAnimationCooldown()
     {
         yield return new WaitForSeconds(animationRestartCooldown);
-        SoundManager.Instance.Play("ButtonClick");
+        SoundManager.Instance.Play("OnButtonClick");
         UnityEngine.SceneManagement.SceneManager.LoadScene(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
-        yield return new WaitForSeconds(animationRestartCooldown);
-        restartPanel.SetActive(false);
 
     }
 

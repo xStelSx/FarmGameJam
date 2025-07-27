@@ -9,10 +9,14 @@ public class CarExportTravel : MonoBehaviour
     [SerializeField] private Vector2 startPosition; 
     [SerializeField] private Vector2 endPosition; 
     [SerializeField] private GlobalTimer globalTimer; 
-    [SerializeField] private Image objectImage; 
+    [SerializeField] private Image objectImage;
+
+    [SerializeField] private QuestManager questManager;
 
     private bool isAnimating = false;
     private Coroutine animationCoroutine;
+
+    private bool gameOver = false;
 
     private void Start()
     {
@@ -21,6 +25,16 @@ public class CarExportTravel : MonoBehaviour
 
         
         globalTimer.exportButton.onClick.AddListener(StartAnimation);
+
+        if (questManager != null)
+        {
+            questManager.restartButton.onClick.AddListener(OnGameOver);
+        }
+    }
+
+    public void OnGameOver()
+    {
+        gameOver = true;
     }
 
     public void StartAnimation()
@@ -45,6 +59,13 @@ public class CarExportTravel : MonoBehaviour
         
         while (elapsedTime < halfDuration)
         {
+            if (gameOver)
+            {
+                // ѕри Game Over останавливаемс€ на текущей позиции
+                objectImage.transform.rotation = Quaternion.Euler(0, 180, 0);
+                isAnimating = false;
+                yield break;
+            }
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / halfDuration;
             objectToMove.anchoredPosition = Vector2.Lerp(startPosition, endPosition, t);
