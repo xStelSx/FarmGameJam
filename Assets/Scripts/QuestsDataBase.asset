@@ -15,15 +15,211 @@ MonoBehaviour:
   questStructures:
   - questId: 1
     segmentRequirements:
-    - segmentId: 7
-      segmentImage: {fileID: 21300000, guid: b286ea4e4b446c548a6cbf7192e7b173, type: 3}
+    - segmentId: 1
+      segmentImage: {fileID: 21300000, guid: c60a8da2b0a46c94c9d5f5d6afc7fc08, type: 3}
       quantityResourse: 5
-    moneyReward: 100
+    moneyReward: 75
     attempsToComplete: 4
   - questId: 2
     segmentRequirements:
+    - segmentId: 2
+      segmentImage: {fileID: 21300000, guid: b5e18bbacee45354c928af33111aafc2, type: 3}
+      quantityResourse: 9
+    moneyReward: 80
+    attempsToComplete: 4
+  - questId: 3
+    segmentRequirements:
+    - segmentId: 3
+      segmentImage: {fileID: 21300000, guid: 67f57bf7c0a6782499ce3eac8f24f89a, type: 3}
+      quantityResourse: 7
+    moneyReward: 75
+    attempsToComplete: 4
+  - questId: 4
+    segmentRequirements:
+    - segmentId: 2
+      segmentImage: {fileID: 21300000, guid: b5e18bbacee45354c928af33111aafc2, type: 3}
+      quantityResourse: 18
+    moneyReward: 95
+    attempsToComplete: 4
+  - questId: 5
+    segmentRequirements:
+    - segmentId: 4
+      segmentImage: {fileID: 21300000, guid: d81e9d28b32359946b61f6f95e4967a1, type: 3}
+      quantityResourse: 6
+    moneyReward: 105
+    attempsToComplete: 4
+  - questId: 6
+    segmentRequirements:
+    - segmentId: 1
+      segmentImage: {fileID: 21300000, guid: c60a8da2b0a46c94c9d5f5d6afc7fc08, type: 3}
+      quantityResourse: 18
+    moneyReward: 70
+    attempsToComplete: 4
+  - questId: 7
+    segmentRequirements:
+    - segmentId: 4
+      segmentImage: {fileID: 21300000, guid: d81e9d28b32359946b61f6f95e4967a1, type: 3}
+      quantityResourse: 12
+    moneyReward: 110
+    attempsToComplete: 4
+  - questId: 8
+    segmentRequirements:
     - segmentId: 5
       segmentImage: {fileID: 21300000, guid: 83925e8aea6d8ba48b91e00901bf7081, type: 3}
+      quantityResourse: 8
+    moneyReward: 115
+    attempsToComplete: 4
+  - questId: 9
+    segmentRequirements:
+    - segmentId: 3
+      segmentImage: {fileID: 21300000, guid: 67f57bf7c0a6782499ce3eac8f24f89a, type: 3}
+      quantityResourse: 17
+    moneyReward: 140
+    attempsToComplete: 4
+  - questId: 10
+    segmentRequirements:
+    - segmentId: 6
+      segmentImage: {fileID: 21300000, guid: fcfc640989004574da2a21c923ca0b8c, type: 3}
       quantityResourse: 7
-    moneyReward: 125
+    moneyReward: 155
+    attempsToComplete: 4
+  - questId: 11
+    segmentRequirements:
+    - segmentId: 1
+      segmentImage: {fileID: 21300000, guid: c60a8da2b0a46c94c9d5f5d6afc7fc08, type: 3}
+      quantityResourse: 28
+    moneyReward: 95
+    attempsToComplete: 4
+  - questId: 12
+    segmentRequirements:
+    - segmentId: 5
+      segmentImage: {fileID: 21300000, guid: 83925e8aea6d8ba48b91e00901bf7081, type: 3}
+      quantityResourse: 15
+    moneyReward: 135
+    attempsToComplete: 4
+  - questId: 13
+    segmentRequirements:
+    - segmentId: 6
+      segmentImage: {fileID: 21300000, guid: fcfc640989004574da2a21c923ca0b8c, type: 3}
+      quantityResourse: 13
+    moneyReward: 120
+    attempsToComplete: 4
+  - questId: 14
+    segmentRequirements:
+    - segmentId: 7
+      segmentImage: {fileID: 21300000, guid: b286ea4e4b446c548a6cbf7192e7b173, type: 3}
+      quantityResourse: 8
+    moneyReward: 145
+    attempsToComplete: 4
+  - questId: 15
+    segmentRequirements:
+    - segmentId: 3
+      segmentImage: {fileID: 21300000, guid: 67f57bf7c0a6782499ce3eac8f24f89a, type: 3}
+      quantityResourse: 24
+    moneyReward: 130
+    attempsToComplete: 4
+  - questId: 16
+    segmentRequirements:
+    - segmentId: 5
+      segmentImage: {fileID: 21300000, guid: 83925e8aea6d8ba48b91e00901bf7081, type: 3}
+      quantityResourse: 16
+    moneyReward: 155
+    attempsToComplete: 4
+  - questId: 17
+    segmentRequirements:
+    - segmentId: 8
+      segmentImage: {fileID: 21300000, guid: bc45c6cd5de830b459d11f98c80e10bd, type: 3}
+      quantityResourse: 10
+    moneyReward: 165
+    attempsToComplete: 4
+  - questId: 18
+    segmentRequirements:
+    - segmentId: 7
+      segmentImage: {fileID: 21300000, guid: b286ea4e4b446c548a6cbf7192e7b173, type: 3}
+      quantityResourse: 14
+    moneyReward: 180
+    attempsToComplete: 4
+  - questId: 19
+    segmentRequirements:
+    - segmentId: 2
+      segmentImage: {fileID: 21300000, guid: b5e18bbacee45354c928af33111aafc2, type: 3}
+      quantityResourse: 26
+    moneyReward: 195
+    attempsToComplete: 4
+  - questId: 20
+    segmentRequirements:
+    - segmentId: 9
+      segmentImage: {fileID: 21300000, guid: c0c992ad5681594469fafd9b6f5a9ec7, type: 3}
+      quantityResourse: 4
+    moneyReward: 210
+    attempsToComplete: 4
+  - questId: 21
+    segmentRequirements:
+    - segmentId: 6
+      segmentImage: {fileID: 21300000, guid: fcfc640989004574da2a21c923ca0b8c, type: 3}
+      quantityResourse: 18
+    moneyReward: 175
+    attempsToComplete: 4
+  - questId: 22
+    segmentRequirements:
+    - segmentId: 8
+      segmentImage: {fileID: 21300000, guid: bc45c6cd5de830b459d11f98c80e10bd, type: 3}
+      quantityResourse: 16
+    moneyReward: 220
+    attempsToComplete: 4
+  - questId: 23
+    segmentRequirements:
+    - segmentId: 10
+      segmentImage: {fileID: 21300000, guid: 66758aab8c61e5b4bb33581e33737dac, type: 3}
+      quantityResourse: 10
+    moneyReward: 245
+    attempsToComplete: 4
+  - questId: 24
+    segmentRequirements:
+    - segmentId: 4
+      segmentImage: {fileID: 21300000, guid: d81e9d28b32359946b61f6f95e4967a1, type: 3}
+      quantityResourse: 47
+    moneyReward: 150
+    attempsToComplete: 4
+  - questId: 25
+    segmentRequirements:
+    - segmentId: 5
+      segmentImage: {fileID: 21300000, guid: 83925e8aea6d8ba48b91e00901bf7081, type: 3}
+      quantityResourse: 28
+    moneyReward: 250
+    attempsToComplete: 4
+  - questId: 26
+    segmentRequirements:
+    - segmentId: 11
+      segmentImage: {fileID: 21300000, guid: 0b3e5029014e48e4882b0a93c7aaa610, type: 3}
+      quantityResourse: 12
+    moneyReward: 265
+    attempsToComplete: 4
+  - questId: 27
+    segmentRequirements:
+    - segmentId: 1
+      segmentImage: {fileID: 21300000, guid: c60a8da2b0a46c94c9d5f5d6afc7fc08, type: 3}
+      quantityResourse: 47
+    moneyReward: 245
+    attempsToComplete: 4
+  - questId: 28
+    segmentRequirements:
+    - segmentId: 12
+      segmentImage: {fileID: 21300000, guid: dfdf977b912e26741bc423123c950ac5, type: 3}
+      quantityResourse: 12
+    moneyReward: 310
+    attempsToComplete: 4
+  - questId: 29
+    segmentRequirements:
+    - segmentId: 9
+      segmentImage: {fileID: 21300000, guid: c0c992ad5681594469fafd9b6f5a9ec7, type: 3}
+      quantityResourse: 35
+    moneyReward: 1000
+    attempsToComplete: 4
+  - questId: 30
+    segmentRequirements:
+    - segmentId: 12
+      segmentImage: {fileID: 21300000, guid: dfdf977b912e26741bc423123c950ac5, type: 3}
+      quantityResourse: 40
+    moneyReward: 1200
     attempsToComplete: 4

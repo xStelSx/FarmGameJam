@@ -113,6 +113,12 @@ public class PlaceManager : MonoBehaviour
             newSegmentPrefab.transform.SetParent(farmPlace.transform);
         }
 
+        Transform firstChild = newSegmentPrefab.transform.GetChild(0);
+        InteractReport interactReport = firstChild.GetComponent<InteractReport>();
+        interactReport.ID = ID_SegmentOnPlace;
+
+
+        // Сохраняем новый префаб в массиве
         SegmentsPrefabPlace[ID_SegmentOnPlace] = newSegmentPrefab;
         segmentArray[ID_SegmentOnPlace] = ID_SegmentOnMarket;
 
@@ -130,10 +136,16 @@ public class PlaceManager : MonoBehaviour
             Destroy(SegmentsPrefabPlace[ID_SegmentOnPlace]);
         }
 
-        Vector3 spawnPosition = SegmentsPrefabPlace[ID_SegmentOnPlace].transform.position;
-        GameObject farmPlace = GameObject.Find("FarmPlace");
-
-        GameObject newBaseSegmentPrefab = Instantiate(baseSegmentPrefab, spawnPosition, Quaternion.identity);
+        GameObject farmPlace = GameObject.Find("FarmPlace"); // Замените "FarmPlace" на имя вашего объекта, если оно другое
+        // Создаем новый базовый префаб на позиции ID_SegmentOnPlace
+        Vector3 currentRotation = SegmentsPrefabPlace[ID_SegmentOnPlace].transform.rotation.eulerAngles;
+        GameObject newBaseSegmentPrefab = Instantiate(
+            baseSegmentPrefab,
+            SegmentsPrefabPlace[ID_SegmentOnPlace].transform.position,
+            Quaternion.Euler(0, currentRotation.y, 0)  // Вычитаем 125 градусов только из Y-ротации
+        );
+        //GameObject newBaseSegmentPrefab = Instantiate(baseSegmentPrefab, SegmentsPrefabPlace[ID_SegmentOnPlace].transform.position,  Quaternion.identity);
+        // Устанавливаем родителя нового префаба
 
         if (farmPlace != null)
         {
