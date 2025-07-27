@@ -34,12 +34,12 @@ public class MarketInventory : MonoBehaviour
 
                 itemIcons.Add(itemIcon);
 
-                Image iconImage = itemIcon.transform.Find("Icon").GetComponent<Image>();
+                //Image iconImage = itemIcon.transform.Find("Icon").GetComponent<Image>();
                 TMP_Text priceText = itemIcon.transform.Find("Price").GetComponent<TMP_Text>();
 
                 ItemIconHandler iconHandler = itemIcon.GetComponent<ItemIconHandler>();
 
-                iconImage.sprite = segment.Icon;
+                //iconImage.sprite = segment.Icon;
                 priceText.text = segment.Price.ToString(); 
 
                 iconHandler.itemIndex = i;

@@ -14,20 +14,16 @@ public class MarketManager : MonoBehaviour
 
     public void OpenMarket()
     {
-        
-        StartCoroutine(MoveCoroutine());
+        StartCoroutine(MoveCoroutine(upperY));
     }
 
-    private IEnumerator MoveCoroutine()
+    private IEnumerator MoveCoroutine(float targetY)
     {
-        while (true) 
+        while (true)
         {
-            
-            float targetY = movingUp ? upperY : lowerY;
 
             while (Mathf.Abs(uiElement.anchoredPosition.y - targetY) > 0.01f)
             {
-
                 float newY = Mathf.MoveTowards(uiElement.anchoredPosition.y, targetY, speed * Time.deltaTime);
                 uiElement.anchoredPosition = new Vector2(uiElement.anchoredPosition.x, newY);
                 yield return null;
@@ -36,6 +32,16 @@ public class MarketManager : MonoBehaviour
             movingUp = !movingUp;
 
             yield break;
+        }
+    }
+    
+    private void Update()
+    {
+        // Проверяем нажатие правой кнопки мыши
+        if (Input.GetMouseButtonDown(1)) // 1 - правая кнопка мыши
+        {
+            // Запускаем корутину для перемещения вниз
+            StartCoroutine(MoveCoroutine(lowerY));
         }
     }
 
