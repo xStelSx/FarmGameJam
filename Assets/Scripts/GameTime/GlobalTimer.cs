@@ -11,7 +11,7 @@ public class GlobalTimer : MonoBehaviour
     [SerializeField] public bool isRunning = true;
     [SerializeField] private float currentTimerTime;
     [SerializeField] public Button exportButton;
-    [SerializeField] public float exportCooldown = 30f;
+    [SerializeField] public float exportCooldown = 20f;
     [SerializeField] private GameObject PausePanel;
     [SerializeField] public InventorySystem inventorySystem;
 
@@ -22,12 +22,18 @@ public class GlobalTimer : MonoBehaviour
     public bool isExportOnCooldown = false;
 
 
+    public GameObject Tutor;
+    [SerializeField] public float TutorLife = 22f;
+
+
     void Start()
     {
 
         startTimerTime = Time.time;
 
         exportButton.onClick.AddListener(ExportButtonClick);
+
+        StartCoroutine(TutorDeath());
 
     }
 
@@ -37,6 +43,9 @@ public class GlobalTimer : MonoBehaviour
         currentTimerTime = Time.time - startTimerTime;
         int timerMinutes = (int)currentTimerTime / 60;
         int timerSeconds = (int)currentTimerTime % 60;
+
+
+        if (Input.GetKeyDown(KeyCode.Escape)) Tutor.SetActive(false);
 
     }
 
@@ -89,7 +98,13 @@ public class GlobalTimer : MonoBehaviour
         yield return new WaitForSeconds(exportCooldown);
         exportButton.gameObject.SetActive(true);
         isExportOnCooldown = false;
+    }
 
+    private IEnumerator TutorDeath()
+    {
+        yield return new WaitForSeconds(TutorLife);
+        Tutor.SetActive(false);
+        Debug.Log("Тутор попытка удалить");
     }
 
     private void ClearInventory()
@@ -115,7 +130,7 @@ public class GlobalTimer : MonoBehaviour
         }
         else
         {
-            
+
         }
     }
 }

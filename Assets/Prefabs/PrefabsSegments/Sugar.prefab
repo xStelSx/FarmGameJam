@@ -63,7 +63,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CountItems: 1
-  Timer: 5
+  Timer: 4
 --- !u!1001 &319803161071784555
 PrefabInstance:
   m_ObjectHideFlags: 0

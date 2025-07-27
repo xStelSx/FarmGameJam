@@ -125,10 +125,10 @@ public class QuestManager : MonoBehaviour
 
     private IEnumerator PlayVictorySoundAfterDelay()
     {
-        // Ждем 15 секунд перед воспроизведением звука
+        // пїЅпїЅпїЅпїЅ 15 пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         yield return new WaitForSeconds(2f);
 
-        // Проигрываем звук победы
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         SoundManager.Instance.Play("Victory");
     }
 
@@ -161,10 +161,10 @@ public class QuestManager : MonoBehaviour
 
     private IEnumerator EnableButtonAfterAnimation(Button button, Animator animator)
     {
-        // Ждем пока анимация закончится
+        // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         yield return new WaitForSeconds(animationDelay);
 
-        // Дополнительная проверка, если анимация длиннее
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
         {
             yield return null;
@@ -179,7 +179,7 @@ public class QuestManager : MonoBehaviour
 
         if (!currentProgress.IsComplete())
         {
-            Debug.Log("не сделал условие");
+            Debug.Log("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
             return;
         }
 
@@ -197,7 +197,7 @@ public class QuestManager : MonoBehaviour
     {
         if (currentProgress == null)
         {
-            Debug.Log("квесты кончились");
+            Debug.Log("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
             return false;
         }
 
@@ -212,7 +212,7 @@ public class QuestManager : MonoBehaviour
             attemptsToComplete--; 
             UpdateQuestUI();
 
-            Debug.Log("не сделал условие");
+            Debug.Log("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
             if (attemptsToComplete <= 0)
             {
                 StartCoroutine(CarExportTimer());
@@ -236,7 +236,7 @@ public class QuestManager : MonoBehaviour
         SoundManager.Instance.Play("QuestComplete");
         currentQuestIndex++;
         StartNextQuest();
-        Debug.Log("молодец сделал!");
+        Debug.Log("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!");
         return true;
     }
 
@@ -244,7 +244,7 @@ public class QuestManager : MonoBehaviour
     {
         SoundManager.Instance.Play("Lose");
         Debug.Log("GAME OVER NAHER");
-        // Активируем Game Over объект
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Game Over пїЅпїЅпїЅпїЅпїЅпїЅ
         if (gameOverObject != null)
         {
             transition.SetTrigger("Start");
@@ -252,7 +252,7 @@ public class QuestManager : MonoBehaviour
             restartButton.gameObject.SetActive(true);
 
 
-            // Устанавливаем текст с информацией о текущем квесте
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             if (gameOverText != null)
             {
                 gameOverText.text = currentQuest.questId.ToString();
@@ -264,7 +264,7 @@ public class QuestManager : MonoBehaviour
                 }
             }
 
-            // Активируем кнопку рестарта
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             if (restartButton != null)
             {
                 restartButton.onClick.RemoveAllListeners();
@@ -276,7 +276,7 @@ public class QuestManager : MonoBehaviour
 
     public void GameendAnimStart()
     {
-        //вот твоя строчка кода для запуска анимации конца игры
+        //пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
         transition.SetTrigger("Start");
     }
     public void RestartScene()
@@ -293,10 +293,10 @@ public class QuestManager : MonoBehaviour
     {
         transition2.SetTrigger("TriggerRestart");
 
-        // Ждем завершения анимации
+        // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         yield return new WaitForSeconds(animationRestartCooldown);
 
-        // Перезагружаем сцену
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         SoundManager.Instance.Play("OnButtonClick");
         UnityEngine.SceneManagement.SceneManager.LoadScene(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
@@ -305,9 +305,9 @@ public class QuestManager : MonoBehaviour
 
     private IEnumerator CarExportTimer()
     {
-        yield return new WaitForSeconds(15f);
+        yield return new WaitForSeconds(10f);
 
-        // Получаем компонент CarExportTravel и останавливаем машину
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ CarExportTravel пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         CarExportTravel carExport = FindObjectOfType<CarExportTravel>();
         if (carExport != null)
         {
@@ -327,7 +327,7 @@ public class QuestManager : MonoBehaviour
         //    }
         //}
 
-        //МЕНЯ ЗАСТАВИЛИ ЭТО НЕ Я ПИСАЛ!!!!
+        //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ!!!!
         if (attemptsToComplete == 4)
         {
             attempt1.SetActive(true);
