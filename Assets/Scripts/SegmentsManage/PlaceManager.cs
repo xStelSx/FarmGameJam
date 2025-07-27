@@ -15,6 +15,7 @@ public class PlaceManager : MonoBehaviour
     public GameObject[] SegmentsPrefabPlace = new GameObject[36];
 
     private int?[] segmentArray = new int?[36];
+    
 
     void Start()
     {
@@ -88,8 +89,15 @@ public class PlaceManager : MonoBehaviour
         }
         // Получаем префаб из списка Segments по ID_SegmentOnMarket
         InterfaceSegments segment = FindObjectOfType<ISManager>().Segments[ID_SegmentOnMarket];
+
+        GameObject farmPlace = GameObject.Find("FarmPlace"); // Замените "FarmPlace" на имя вашего объекта, если оно другое
         // Создаем новый префаб на позиции ID_SegmentOnPlace
         GameObject newSegmentPrefab = Instantiate(segment.Prefab, SegmentsPrefabPlace[ID_SegmentOnPlace].transform.position, Quaternion.identity);
+        // Устанавливаем родителя нового префаба
+        if (farmPlace != null)
+        {
+            newSegmentPrefab.transform.SetParent(farmPlace.transform);
+        }
 
         Transform firstChild = newSegmentPrefab.transform.GetChild(0);
         InteractReport interactReport = firstChild.GetComponent<InteractReport>();
@@ -114,7 +122,16 @@ public class PlaceManager : MonoBehaviour
             Destroy(SegmentsPrefabPlace[ID_SegmentOnPlace]);
         }
         // Создаем новый базовый префаб на позиции ID_SegmentOnPlace
+
+        GameObject farmPlace = GameObject.Find("FarmPlace"); // Замените "FarmPlace" на имя вашего объекта, если оно другое
+        // Создаем новый базовый префаб на позиции ID_SegmentOnPlace
         GameObject newBaseSegmentPrefab = Instantiate(baseSegmentPrefab, SegmentsPrefabPlace[ID_SegmentOnPlace].transform.position, Quaternion.identity);
+        // Устанавливаем родителя нового префаба
+        if (farmPlace != null)
+        {
+            newBaseSegmentPrefab.transform.SetParent(farmPlace.transform);
+        }
+
         Transform firstChild = newBaseSegmentPrefab.transform.GetChild(0);
         InteractReport interactReport = firstChild.GetComponent<InteractReport>();
         interactReport.ID = ID_SegmentOnPlace;

@@ -26,4 +26,4 @@ MonoBehaviour:
       segmentImage: {fileID: 21300000, guid: 83925e8aea6d8ba48b91e00901bf7081, type: 3}
       quantityResourse: 7
     moneyReward: 125
-    attempsToComplete: 3
+    attempsToComplete: 4
