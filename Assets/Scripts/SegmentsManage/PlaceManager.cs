@@ -7,14 +7,14 @@ public class PlaceManager : MonoBehaviour
 
     private MarketManager marketManager;
 
-    private int ID_SegmentOnPlace;
+    public int ID_SegmentOnPlace;
     private int ID_SegmentOnMarket;
 
     public GameObject baseSegmentPrefab;
 
     public GameObject[] SegmentsPrefabPlace = new GameObject[36];
 
-    private int?[] segmentArray = new int?[36];
+    public int?[] segmentArray = new int?[36];
 
     //public AddItems addItems;
 
@@ -32,7 +32,9 @@ public class PlaceManager : MonoBehaviour
 
     public void MarketReport()
     {
+        SoundManager.Instance.Play("ChoosePlaceSegment");
         marketManager.OpenMarket();
+
     }
 
 
@@ -71,6 +73,7 @@ public class PlaceManager : MonoBehaviour
         {
             SetBasePrefab();
             segmentArray[ID_SegmentOnPlace] = null;
+            SoundManager.Instance.Play("RemoveSegment");
             Debug.Log($"клетка {ID_SegmentOnPlace} стала свободной");
         }
         else
@@ -93,17 +96,22 @@ public class PlaceManager : MonoBehaviour
         InterfaceSegments segment = FindObjectOfType<ISManager>().Segments[ID_SegmentOnMarket];
 
         GameObject farmPlace = GameObject.Find("FarmPlace"); // Замените "FarmPlace" на имя вашего объекта, если оно другое
-        // Создаем новый префаб на позиции ID_SegmentOnPlace
-        GameObject newSegmentPrefab = Instantiate(segment.Prefab, SegmentsPrefabPlace[ID_SegmentOnPlace].transform.position, Quaternion.identity);
+                                                             // Создаем новый префаб на позиции ID_SegmentOnPlace
+        Vector3 currentRotation = SegmentsPrefabPlace[ID_SegmentOnPlace].transform.rotation.eulerAngles;
+        GameObject newSegmentPrefab = Instantiate(
+            segment.Prefab,
+            SegmentsPrefabPlace[ID_SegmentOnPlace].transform.position,
+            Quaternion.Euler(0, currentRotation.y, 0)  // Вычитаем 125 градусов только из Y-ротации
+        );
         // Устанавливаем родителя нового префаба
         if (farmPlace != null)
         {
             newSegmentPrefab.transform.SetParent(farmPlace.transform);
         }
 
-        Transform firstChild = newSegmentPrefab.transform.GetChild(0);
-        InteractReport interactReport = firstChild.GetComponent<InteractReport>();
-        interactReport.ID = ID_SegmentOnPlace;
+        //Transform firstChild = newSegmentPrefab.transform.GetChild(0);
+        //InteractReport interactReport = firstChild.GetComponent<InteractReport>();
+        //interactReport.ID = ID_SegmentOnPlace;
 
 
         // Сохраняем новый префаб в массиве
@@ -113,6 +121,8 @@ public class PlaceManager : MonoBehaviour
 
 
         SegmentsPrefabPlace[ID_SegmentOnPlace].GetComponent<AddItems>().activeCollectionItem(ID_SegmentOnMarket);
+
+        SoundManager.Instance.Play("PlaceSegment");
 
         Debug.Log($"На клетку {ID_SegmentOnPlace} установлен новый префаб {ID_SegmentOnMarket}");
     }
@@ -130,7 +140,7 @@ public class PlaceManager : MonoBehaviour
 
         GameObject farmPlace = GameObject.Find("FarmPlace"); // Замените "FarmPlace" на имя вашего объекта, если оно другое
         // Создаем новый базовый префаб на позиции ID_SegmentOnPlace
-        GameObject newBaseSegmentPrefab = Instantiate(baseSegmentPrefab, SegmentsPrefabPlace[ID_SegmentOnPlace].transform.position, Quaternion.identity);
+        GameObject newBaseSegmentPrefab = Instantiate(baseSegmentPrefab, SegmentsPrefabPlace[ID_SegmentOnPlace].transform.position,  Quaternion.identity);
         // Устанавливаем родителя нового префаба
         if (farmPlace != null)
         {

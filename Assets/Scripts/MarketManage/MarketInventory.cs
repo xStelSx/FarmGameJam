@@ -10,7 +10,7 @@ public class MarketInventory : MonoBehaviour
     private ISManager iSManager;
     public GameObject ItemsPanel;
     public GameObject itemIconPrefab;
-    private List<GameObject> itemIcons = new List<GameObject>();
+    public List<GameObject> itemIcons = new List<GameObject>();
 
     void Start()
     {
@@ -35,12 +35,12 @@ public class MarketInventory : MonoBehaviour
                 itemIcons.Add(itemIcon);
 
                 //Image iconImage = itemIcon.transform.Find("Icon").GetComponent<Image>();
-                TMP_Text priceText = itemIcon.transform.Find("Price").GetComponent<TMP_Text>();
+                //TMP_Text priceText = itemIcon.transform.Find("Price").GetComponent<TMP_Text>();
 
                 ItemIconHandler iconHandler = itemIcon.GetComponent<ItemIconHandler>();
 
                 //iconImage.sprite = segment.Icon;
-                priceText.text = segment.Price.ToString(); 
+                //priceText.text = segment.Price.ToString(); 
 
                 iconHandler.itemIndex = i;
             }

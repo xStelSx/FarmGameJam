@@ -32,7 +32,7 @@ public class QuestManager : MonoBehaviour
     [SerializeField] private GameObject questsPackage;
 
     [SerializeField] private MoneyManager moneyManager;
-    private int currentQuestIndex = 0;
+    public int currentQuestIndex = 0;
     public QuestData currentQuest;
     private QuestProgress currentProgress;
 
@@ -40,6 +40,7 @@ public class QuestManager : MonoBehaviour
     public GameObject restartPanel;
 
     public Animator transition;
+    public Animator transition2;
 
     public float animationRestartCooldown = 1f;
 
@@ -53,6 +54,8 @@ public class QuestManager : MonoBehaviour
     public GameObject attempt3;
     public GameObject attempt4;
 
+    public SegmentsLock segmentLock;
+
     private void Awake()
     {
         Time.timeScale = 1f;
@@ -60,7 +63,7 @@ public class QuestManager : MonoBehaviour
         transition.SetTrigger("TriggerRestart2");
         exportButton.onClick.AddListener(CompleteCurrentQuest);
         StartNextQuest();
-
+        segmentLock.CheckCcurrentQuestIndex(currentQuestIndex);
         if (inventorySystem != null)
         {
             inventorySystem.OnInventoryChanged += UpdateQuestUI;
@@ -107,6 +110,7 @@ public class QuestManager : MonoBehaviour
                     restartButton.onClick.AddListener(RestartScene);
                 }
             }
+            StartCoroutine(PlayVictorySoundAfterDelay());
             Debug.Log("All quests completed!");
             return;
         }
@@ -114,8 +118,20 @@ public class QuestManager : MonoBehaviour
         currentQuest = questDatabase.questStructures[currentQuestIndex];
         currentProgress = new QuestProgress(currentQuest, inventorySystem);
         attemptsToComplete = currentQuest.attempsToComplete;
+        segmentLock.CheckCcurrentQuestIndex(currentQuestIndex);
         UpdateQuestUI();
+
     }
+
+    private IEnumerator PlayVictorySoundAfterDelay()
+    {
+        // Ждем 15 секунд перед воспроизведением звука
+        yield return new WaitForSeconds(2f);
+
+        // Проигрываем звук победы
+        SoundManager.Instance.Play("Victory");
+    }
+
 
     private void UpdateQuestUI()
     {
@@ -227,7 +243,6 @@ public class QuestManager : MonoBehaviour
     private void HandleFailedQuest()
     {
         SoundManager.Instance.Play("Lose");
-        //Time.timeScale = 0f;
         Debug.Log("GAME OVER NAHER");
         // Активируем Game Over объект
         if (gameOverObject != null)
@@ -266,7 +281,7 @@ public class QuestManager : MonoBehaviour
     }
     public void RestartScene()
     {
-        transition.SetTrigger("TriggerRestart");
+        transition2.SetTrigger("TriggerRestart");
         StartCoroutine(RestartAnimationCooldown());
         //SoundManager.Instance.Play("ButtonClick");
         //UnityEngine.SceneManagement.SceneManager.LoadScene(
@@ -276,7 +291,12 @@ public class QuestManager : MonoBehaviour
 
     private IEnumerator RestartAnimationCooldown()
     {
+        transition2.SetTrigger("TriggerRestart");
+
+        // Ждем завершения анимации
         yield return new WaitForSeconds(animationRestartCooldown);
+
+        // Перезагружаем сцену
         SoundManager.Instance.Play("OnButtonClick");
         UnityEngine.SceneManagement.SceneManager.LoadScene(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
@@ -285,7 +305,15 @@ public class QuestManager : MonoBehaviour
 
     private IEnumerator CarExportTimer()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(15f);
+
+        // Получаем компонент CarExportTravel и останавливаем машину
+        CarExportTravel carExport = FindObjectOfType<CarExportTravel>();
+        if (carExport != null)
+        {
+            carExport.StopCarAtCurrentPosition();
+        }
+
         HandleFailedQuest();
     }
 
