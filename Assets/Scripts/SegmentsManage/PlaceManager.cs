@@ -4,24 +4,28 @@ using UnityEngine;
 
 public class PlaceManager : MonoBehaviour
 {
-
     private MarketManager marketManager;
 
     public int ID_SegmentOnPlace;
     private int ID_SegmentOnMarket;
 
     public GameObject baseSegmentPrefab;
-
     public GameObject[] SegmentsPrefabPlace = new GameObject[36];
-
     public int?[] segmentArray = new int?[36];
 
-    //public AddItems addItems;
-
+    // Добавляем ссылки на системы частиц
+    public ParticleSystem placeParticleSystem; // Эффект при размещении
+    public ParticleSystem removeParticleSystem; // Эффект при удалении
 
     void Start()
     {
         marketManager = FindObjectOfType<MarketManager>();
+
+        // Если системы частиц не назначены в инспекторе, попробуем найти их
+        if (placeParticleSystem == null)
+            placeParticleSystem = GameObject.Find("PlaceParticles")?.GetComponent<ParticleSystem>();
+        if (removeParticleSystem == null)
+            removeParticleSystem = GameObject.Find("RemoveParticles")?.GetComponent<ParticleSystem>();
     }
 
     public void ReceiveMessage(int id)
@@ -34,10 +38,7 @@ public class PlaceManager : MonoBehaviour
     {
         SoundManager.Instance.Play("ChoosePlaceSegment");
         marketManager.OpenMarket();
-
     }
-
-
 
     public void DetectActive_SegmentOnPlace(int id_SegmentOnPlace)
     {
@@ -62,15 +63,16 @@ public class PlaceManager : MonoBehaviour
             }
             else
                 Debug.Log($"клетка {ID_SegmentOnPlace} занята полем {segmentArray[ID_SegmentOnPlace]}");
-
         }
     }
 
     public void DeleteSegment()
     {
-
         if (segmentArray[ID_SegmentOnPlace] != null)
         {
+            // Воспроизводим эффект удаления перед удалением объекта
+            PlayRemoveParticleEffect(SegmentsPrefabPlace[ID_SegmentOnPlace].transform.position);
+
             SetBasePrefab();
             segmentArray[ID_SegmentOnPlace] = null;
             SoundManager.Instance.Play("RemoveSegment");
@@ -78,12 +80,10 @@ public class PlaceManager : MonoBehaviour
         }
         else
             Debug.Log($"клетка {ID_SegmentOnPlace} уже свободна");
-
     }
 
     public void Replacement()
     {
-
         if (segmentArray[ID_SegmentOnPlace] != null)
         {
             // Удаляем старый префаб, если он существует
@@ -92,18 +92,22 @@ public class PlaceManager : MonoBehaviour
                 Destroy(SegmentsPrefabPlace[ID_SegmentOnPlace]);
             }
         }
-        // Получаем префаб из списка Segments по ID_SegmentOnMarket
-        InterfaceSegments segment = FindObjectOfType<ISManager>().Segments[ID_SegmentOnMarket];
 
-        GameObject farmPlace = GameObject.Find("FarmPlace"); // Замените "FarmPlace" на имя вашего объекта, если оно другое
-                                                             // Создаем новый префаб на позиции ID_SegmentOnPlace
-        Vector3 currentRotation = SegmentsPrefabPlace[ID_SegmentOnPlace].transform.rotation.eulerAngles;
+        InterfaceSegments segment = FindObjectOfType<ISManager>().Segments[ID_SegmentOnMarket];
+        GameObject farmPlace = GameObject.Find("FarmPlace");
+
+        Vector3 spawnPosition = SegmentsPrefabPlace[ID_SegmentOnPlace].transform.position;
+        Quaternion spawnRotation = Quaternion.Euler(0, SegmentsPrefabPlace[ID_SegmentOnPlace].transform.rotation.eulerAngles.y, 0);
+
+        // Воспроизводим эффект размещения перед созданием объекта
+        PlayPlaceParticleEffect(spawnPosition);
+
         GameObject newSegmentPrefab = Instantiate(
             segment.Prefab,
-            SegmentsPrefabPlace[ID_SegmentOnPlace].transform.position,
-            Quaternion.Euler(0, currentRotation.y, 0)  // Вычитаем 125 градусов только из Y-ротации
+            spawnPosition,
+            spawnRotation
         );
-        // Устанавливаем родителя нового префаба
+
         if (farmPlace != null)
         {
             newSegmentPrefab.transform.SetParent(farmPlace.transform);
@@ -116,18 +120,13 @@ public class PlaceManager : MonoBehaviour
 
         // Сохраняем новый префаб в массиве
         SegmentsPrefabPlace[ID_SegmentOnPlace] = newSegmentPrefab;
-        // Обновляем массив segmentArray
         segmentArray[ID_SegmentOnPlace] = ID_SegmentOnMarket;
-
 
         SegmentsPrefabPlace[ID_SegmentOnPlace].GetComponent<AddItems>().activeCollectionItem(ID_SegmentOnMarket);
 
         SoundManager.Instance.Play("PlaceSegment");
-
         Debug.Log($"На клетку {ID_SegmentOnPlace} установлен новый префаб {ID_SegmentOnMarket}");
     }
-
-
 
     public void SetBasePrefab()
     {
@@ -136,7 +135,6 @@ public class PlaceManager : MonoBehaviour
             // Удаляем старый префаб, если он существует
             Destroy(SegmentsPrefabPlace[ID_SegmentOnPlace]);
         }
-        // Создаем новый базовый префаб на позиции ID_SegmentOnPlace
 
         GameObject farmPlace = GameObject.Find("FarmPlace"); // Замените "FarmPlace" на имя вашего объекта, если оно другое
         // Создаем новый базовый префаб на позиции ID_SegmentOnPlace
@@ -148,6 +146,7 @@ public class PlaceManager : MonoBehaviour
         );
         //GameObject newBaseSegmentPrefab = Instantiate(baseSegmentPrefab, SegmentsPrefabPlace[ID_SegmentOnPlace].transform.position,  Quaternion.identity);
         // Устанавливаем родителя нового префаба
+
         if (farmPlace != null)
         {
             newBaseSegmentPrefab.transform.SetParent(farmPlace.transform);
@@ -156,11 +155,28 @@ public class PlaceManager : MonoBehaviour
         Transform firstChild = newBaseSegmentPrefab.transform.GetChild(0);
         InteractReport interactReport = firstChild.GetComponent<InteractReport>();
         interactReport.ID = ID_SegmentOnPlace;
-        // Сохраняем новый базовый префаб в массиве
+
         SegmentsPrefabPlace[ID_SegmentOnPlace] = newBaseSegmentPrefab;
-        // Обновляем массив segmentArray
-        segmentArray[ID_SegmentOnPlace] = null; // Или любое другое значение, которое вам нужно
+        segmentArray[ID_SegmentOnPlace] = null;
         Debug.Log($"На клетку {ID_SegmentOnPlace} установлен базовый префаб");
     }
 
+    // Методы для работы с частицами
+    private void PlayPlaceParticleEffect(Vector3 position)
+    {
+        if (placeParticleSystem != null)
+        {
+            placeParticleSystem.transform.position = position;
+            placeParticleSystem.Play();
+        }
+    }
+
+    private void PlayRemoveParticleEffect(Vector3 position)
+    {
+        if (removeParticleSystem != null)
+        {
+            removeParticleSystem.transform.position = position;
+            removeParticleSystem.Play();
+        }
+    }
 }
