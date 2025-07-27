@@ -497,7 +497,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 207421150}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.23463322, y: -0.00000002076324, z: 0.000000012688861, w: 0.972084}
+  m_LocalRotation: {x: 0.23463322, y: 0.000000020763231, z: -0.000000012688856, w: 0.972084}
   m_LocalPosition: {x: 2.6, y: 38.3, z: -18.677511}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1772,7 +1772,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 402952407}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1331279006}
+        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: OnButtonClick
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &402952407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1884,7 +1896,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.084905684, g: 0.07489322, b: 0.07489322, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2036,6 +2048,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1331279006}
+        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: onButtonClick
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 322578391}
         m_TargetAssemblyTypeName: GlobalTimer, Assembly-CSharp
         m_MethodName: StopTimer
@@ -5876,7 +5900,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1658084301}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.23463322, y: -0.00000002076324, z: 0.000000012688861, w: 0.972084}
+  m_LocalRotation: {x: 0.23463322, y: 0.000000020763231, z: -0.000000012688856, w: 0.972084}
   m_LocalPosition: {x: 2.6, y: 38.3, z: -18.677511}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6812,6 +6836,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1331279006}
+        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: OnButtonClick
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1871459869
