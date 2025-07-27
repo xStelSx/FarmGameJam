@@ -19,7 +19,7 @@ MonoBehaviour:
       segmentImage: {fileID: 21300000, guid: b286ea4e4b446c548a6cbf7192e7b173, type: 3}
       quantityResourse: 5
     moneyReward: 100
-    attempsToComplete: 1
+    attempsToComplete: 4
   - questId: 2
     segmentRequirements:
     - segmentId: 5

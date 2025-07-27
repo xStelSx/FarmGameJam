@@ -15,7 +15,7 @@ public class SfxSettings : MonoBehaviour
 
     [Header("Music Settings")]
     [SerializeField] private AudioSource musicManager;
-    [SerializeField] private float musicVolume = 0.5f;
+    [SerializeField] private float musicVolume = 0.009f;
 
     [Header("Music Buttons")]
     [SerializeField] private Button musicOnButton;
@@ -54,7 +54,7 @@ public class SfxSettings : MonoBehaviour
     {
         if (SoundManager.Instance != null)
         {
-            // Устанавливаем громкость для всех звуков в SoundManager
+
             foreach (var sound in SoundManager.Instance.GetSounds())
             {
                 sound.source.volume = isSoundOn ? sound.volume : 0f;
@@ -72,13 +72,13 @@ public class SfxSettings : MonoBehaviour
 
     private void UpdateButtonsState()
     {
-        // Обновление кнопок звука
+
         soundOnButton.gameObject.SetActive(isSoundOn);
         soundOnImage.enabled = isSoundOn;
         soundOffButton.gameObject.SetActive(!isSoundOn);
         soundOffImage.enabled = !isSoundOn;
 
-        // Обновление кнопок музыки
+
         musicOnButton.gameObject.SetActive(isMusicOn);
         musicOnImage.enabled = isMusicOn;
         musicOffButton.gameObject.SetActive(!isMusicOn);

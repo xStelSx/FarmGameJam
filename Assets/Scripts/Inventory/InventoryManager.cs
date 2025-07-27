@@ -163,37 +163,37 @@ public class InventorySystem : MonoBehaviour
     //    }
     //}
 
-    // private void Update()
-    // {
-    //     for (KeyCode key = KeyCode.Alpha1; key <= KeyCode.Alpha9; key++)
-    //     {
-    //         if (Input.GetKeyDown(key))
-    //         {
-    //             int segmentId = (int)key - (int)KeyCode.Alpha1 + 1;
-    //             AddItem(segmentId, 1);
-    //         }
-    //     }
+    private void Update()
+    {
+        for (KeyCode key = KeyCode.Alpha1; key <= KeyCode.Alpha9; key++)
+        {
+            if (Input.GetKeyDown(key))
+            {
+                int segmentId = (int)key - (int)KeyCode.Alpha1 + 1;
+                AddItem(segmentId, 1);
+            }
+        }
 
-    //     if (Input.GetKeyDown(KeyCode.Q)) AddItem(1, 1);
-    //     if (Input.GetKeyDown(KeyCode.W)) AddItem(2, 1);
-    //     if (Input.GetKeyDown(KeyCode.E)) AddItem(3, 1);
-    //     if (Input.GetKeyDown(KeyCode.R)) AddItem(4, 1);
-    //     if (Input.GetKeyDown(KeyCode.T)) AddItem(5, 1);
-    //     if (Input.GetKeyDown(KeyCode.Y)) AddItem(6, 1);
-    //     if (Input.GetKeyDown(KeyCode.U)) AddItem(7, 1);
-    //     if (Input.GetKeyDown(KeyCode.I)) AddItem(8, 1);
-    //     if (Input.GetKeyDown(KeyCode.O)) AddItem(9, 1);
-    //     if (Input.GetKeyDown(KeyCode.A)) AddItem(10, 1);
-    //     if (Input.GetKeyDown(KeyCode.S)) AddItem(11, 1);
-    //     if (Input.GetKeyDown(KeyCode.D)) AddItem(12, 1);
+        if (Input.GetKeyDown(KeyCode.Q)) AddItem(1, 1);
+        if (Input.GetKeyDown(KeyCode.W)) AddItem(2, 1);
+        if (Input.GetKeyDown(KeyCode.E)) AddItem(3, 1);
+        if (Input.GetKeyDown(KeyCode.R)) AddItem(4, 1);
+        if (Input.GetKeyDown(KeyCode.T)) AddItem(5, 1);
+        if (Input.GetKeyDown(KeyCode.Y)) AddItem(6, 1);
+        if (Input.GetKeyDown(KeyCode.U)) AddItem(7, 1);
+        if (Input.GetKeyDown(KeyCode.I)) AddItem(8, 1);
+        if (Input.GetKeyDown(KeyCode.O)) AddItem(9, 1);
+        if (Input.GetKeyDown(KeyCode.A)) AddItem(10, 1);
+        if (Input.GetKeyDown(KeyCode.S)) AddItem(11, 1);
+        if (Input.GetKeyDown(KeyCode.D)) AddItem(12, 1);
 
-    //     if(currentTotalItems == 0)
-    //     {
-    //         exportButton.interactable = false;
-    //     }
-    //     else
-    //     {
-    //         exportButton.interactable = true;
-    //     }
-    // }
+        if (currentTotalItems == 0)
+        {
+            exportButton.interactable = false;
+        }
+        else
+        {
+            exportButton.interactable = true;
+        }
+    }
 }
