@@ -19,7 +19,9 @@ public class AddItems : MonoBehaviour
 
     public void activeCollectionItem(int ID)
     {
+        inventorySystem = FindObjectOfType<InventorySystem>();
         StartCoroutine(AddItemCoroutine(ID));
+        
     }
 
     private IEnumerator AddItemCoroutine(int ID)
