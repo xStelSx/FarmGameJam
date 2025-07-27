@@ -41,20 +41,21 @@ public class ItemIconHandler : MonoBehaviour
 
     public void Delete()
     {
-
-        if (50 <= moneyManager.currentMoney)
+        if(placeManager.segmentArray[placeManager.ID_SegmentOnPlace] != null)
         {
+            if (50 <= moneyManager.currentMoney)
+            {
 
-            moneyManager.SubtractMoney(50);
+                moneyManager.SubtractMoney(50);
 
-            placeManager.DeleteSegment();
-            
-            Debug.Log($"Сегмент {itemIndex} куплен за 50!");
+                placeManager.DeleteSegment();
+
+                Debug.Log($"Сегмент {itemIndex} куплен за 50!");
+            }
+            else
+            {
+                Debug.Log("Недостаточно денег для покупки!");
+            }
         }
-        else
-        {
-            Debug.Log("Недостаточно денег для покупки!");
-        }
-
     }
 }
