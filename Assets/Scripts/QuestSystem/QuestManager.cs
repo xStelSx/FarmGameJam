@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using TMPro.Examples;
+using UnityEngine.SceneManagement;
 
 public class QuestManager : MonoBehaviour
 {
@@ -13,17 +13,17 @@ public class QuestManager : MonoBehaviour
 
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI questIdText;
-    [SerializeField] private Image resourceImage;
-    [SerializeField] private TextMeshProUGUI resourceAmountText;
     [SerializeField] private TextMeshProUGUI attemptsText;
     [SerializeField] private Button exportButton;
 
+    [Header("Requirements UI")]
+    [SerializeField] private Image[] resourceImages; 
+    [SerializeField] private TextMeshProUGUI[] resourceTexts; 
 
     [Header("Game Over UI")]
     [SerializeField] private GameObject gameOverObject;
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] public Button restartButton;
-
 
     [Header("Winner UI")]
     [SerializeField] private GameObject winnerObject;
@@ -31,30 +31,29 @@ public class QuestManager : MonoBehaviour
     [SerializeField] private Button winnerButton;
     [SerializeField] private GameObject questsPackage;
 
+    [Header("Other References")]
     [SerializeField] private MoneyManager moneyManager;
-    public int currentQuestIndex = 0;
-    public QuestData currentQuest;
-    private QuestProgress currentProgress;
+    [SerializeField] private SegmentsLock segmentLock;
 
-
-    public GameObject restartPanel;
-
-    public Animator transition;
-    public Animator transition2;
-
-    public float animationRestartCooldown = 1f;
-
-    [SerializeField] private float animationDelay = 0.5f;
-
-
-    public int attemptsToComplete = 0;
-
+    [Header("Attempts UI")]
     public GameObject attempt1;
     public GameObject attempt2;
     public GameObject attempt3;
     public GameObject attempt4;
 
-    public SegmentsLock segmentLock;
+    [Header("Animation")]
+    public GameObject restartPanel;
+    public Animator transition;
+    public Animator transition2;
+    public float animationRestartCooldown = 1f;
+    [SerializeField] private float animationDelay = 0.5f;
+
+    public int currentQuestIndex = 0;
+    public QuestData currentQuest;
+    private QuestProgress currentProgress;
+    public int attemptsToComplete = 0;
+
+
 
     private void Awake()
     {
@@ -63,141 +62,139 @@ public class QuestManager : MonoBehaviour
         transition.SetTrigger("TriggerRestart2");
         exportButton.onClick.AddListener(CompleteCurrentQuest);
         StartNextQuest();
-        segmentLock.CheckCcurrentQuestIndex(currentQuestIndex);
+
+        if (segmentLock != null)
+            segmentLock.CheckCcurrentQuestIndex(currentQuestIndex);
+
         if (inventorySystem != null)
-        {
             inventorySystem.OnInventoryChanged += UpdateQuestUI;
-        }
     }
 
     private void OnDestroy()
     {
-
         if (inventorySystem != null)
-        {
             inventorySystem.OnInventoryChanged -= UpdateQuestUI;
-        }
     }
 
     private void StartNextQuest()
     {
+        HideAllRequirements();
+
         if (currentQuestIndex >= questDatabase.questStructures.Count)
         {
-            if (winnerObject != null)
-            {
-                questsPackage.SetActive(false);
-                transition.SetTrigger("Start");
-
-                winnerObject.SetActive(true);
-                    winnerButton.gameObject.SetActive(true);
-              
-
-                if (winnerText != null)
-                {
-                    winnerText.text = currentQuest.questId.ToString();
-
-                    foreach (var req in currentQuest.segmentRequirements)
-                    {
-                        int currentAmount = inventorySystem.GetItemCount(req.segmentId);
-                        //gameOverText.text += $"- Item {req.segmentId}: {currentAmount}/{req.quantityResourse}\n";
-                    }
-                }
-
-
-                if (restartButton != null)
-                {
-                    restartButton.onClick.RemoveAllListeners();
-                    restartButton.onClick.AddListener(RestartScene);
-                }
-            }
-            StartCoroutine(PlayVictorySoundAfterDelay());
-            Debug.Log("All quests completed!");
+            ShowWinnerScreen();
             return;
         }
-        //SoundManager.Instance.Play("NewQuestAdded");
+
         currentQuest = questDatabase.questStructures[currentQuestIndex];
         currentProgress = new QuestProgress(currentQuest, inventorySystem);
         attemptsToComplete = currentQuest.attempsToComplete;
-        segmentLock.CheckCcurrentQuestIndex(currentQuestIndex);
+
+        if (segmentLock != null)
+            segmentLock.CheckCcurrentQuestIndex(currentQuestIndex);
+
+        SetupRequirementsUI();
         UpdateQuestUI();
-
+        UpdateAttemptsUI();
     }
 
-    private IEnumerator PlayVictorySoundAfterDelay()
+    private void HideAllRequirements()
     {
-        // ���� 15 ������ ����� ���������������� �����
-        yield return new WaitForSeconds(2f);
+  
+        foreach (var image in resourceImages)
+            if (image != null) image.gameObject.SetActive(false);
 
-        // ����������� ���� ������
-        SoundManager.Instance.Play("Victory");
+        foreach (var text in resourceTexts)
+            if (text != null) text.gameObject.SetActive(false);
     }
 
+    private void SetupRequirementsUI()
+    {
+        if (currentQuest == null || currentQuest.segmentRequirements == null)
+        {
+            Debug.LogError("Quest or requirements not set!");
+            return;
+        }
+
+        int requirementsCount = currentQuest.segmentRequirements.Count;
+        int maxToShow = Mathf.Min(requirementsCount, resourceImages.Length, resourceTexts.Length);
+
+        for (int i = 0; i < maxToShow; i++)
+        {
+            var requirement = currentQuest.segmentRequirements[i];
+
+            
+            if (i < resourceImages.Length && resourceImages[i] != null)
+            {
+                resourceImages[i].gameObject.SetActive(true);
+                resourceImages[i].sprite = requirement.segmentImage;
+            }
+
+           
+            if (i < resourceTexts.Length && resourceTexts[i] != null)
+            {
+                resourceTexts[i].gameObject.SetActive(true);
+                resourceTexts[i].text = $"{inventorySystem.GetItemCount(requirement.segmentId)}/{requirement.quantityResourse}";
+            }
+        }
+    }
 
     private void UpdateQuestUI()
     {
-        if (currentQuest == null || currentQuest.segmentRequirements.Count == 0) return;
+        if (currentQuest == null) return;
 
-        var firstSegment = currentQuest.segmentRequirements[0];
         questIdText.text = currentQuest.questId.ToString();
-        resourceImage.sprite = firstSegment.segmentImage;
-        int currentAmount = inventorySystem.GetItemCount(firstSegment.segmentId);
-        resourceAmountText.text = $"{inventorySystem.GetItemCount(firstSegment.segmentId)}/{firstSegment.quantityResourse}";
         attemptsText.text = attemptsToComplete.ToString();
+
+        int requirementsCount = currentQuest.segmentRequirements.Count;
+        int maxToShow = Mathf.Min(requirementsCount, resourceTexts.Length);
+
+        for (int i = 0; i < maxToShow; i++)
+        {
+            var requirement = currentQuest.segmentRequirements[i];
+            if (resourceTexts[i] != null)
+            {
+                int currentAmount = inventorySystem.GetItemCount(requirement.segmentId);
+                resourceTexts[i].text = $"{currentAmount}/{requirement.quantityResourse}";
+            }
+        }
+    }
+
+    private void UpdateAttemptsUI()
+    {
+        if (attempt1 != null) attempt1.SetActive(attemptsToComplete >= 1);
+        if (attempt2 != null) attempt2.SetActive(attemptsToComplete >= 2);
+        if (attempt3 != null) attempt3.SetActive(attemptsToComplete >= 3);
+        if (attempt4 != null) attempt4.SetActive(attemptsToComplete >= 4);
     }
 
     public void AddProgress(int segmentId, int amount = 1)
     {
         if (currentProgress == null) return;
         currentProgress.AddSegmentProgress(segmentId, amount);
-        UpdateProgressUI();
-    }
-
-    private void UpdateProgressUI()
-    {
-        if (currentQuest == null || currentQuest.segmentRequirements.Count == 0) return;
-        var firstSegment = currentQuest.segmentRequirements[0];
-        resourceAmountText.text = $"{inventorySystem.GetItemCount(firstSegment.segmentId)}/{firstSegment.quantityResourse}";
-    }
-
-    private IEnumerator EnableButtonAfterAnimation(Button button, Animator animator)
-    {
-        // ���� ���� �������� ����������
-        yield return new WaitForSeconds(animationDelay);
-
-        // �������������� ��������, ���� �������� �������
-        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
-        {
-            yield return null;
-        }
-
-        button.gameObject.SetActive(true);
+        UpdateQuestUI();
     }
 
     public void CompleteCurrentQuest()
     {
-        if (currentProgress == null) return;
-
-        if (!currentProgress.IsComplete())
+        if (currentProgress == null || !currentProgress.IsComplete())
         {
-            Debug.Log("�� ������ �������");
+            Debug.Log("Не все условия выполнены");
             return;
         }
 
         foreach (var requirement in currentQuest.segmentRequirements)
-        {
             inventorySystem.RemoveItem(requirement.segmentId, requirement.quantityResourse);
-        }
 
         currentQuestIndex++;
         StartNextQuest();
     }
 
-
     public bool TryCompleteCurrentQuest()
     {
         if (currentProgress == null)
         {
-            Debug.Log("������ ���������");
+            Debug.Log("Прогресс не инициализирован");
             return false;
         }
 
@@ -209,149 +206,82 @@ public class QuestManager : MonoBehaviour
 
         if (!currentProgress.IsComplete())
         {
-            attemptsToComplete--; 
+            attemptsToComplete--;
             UpdateQuestUI();
+            UpdateAttemptsUI();
 
-            Debug.Log("�� ������ �������");
             if (attemptsToComplete <= 0)
-            {
                 StartCoroutine(CarExportTimer());
-                //HandleFailedQuest();
-            }
+
             return false;
-            //Debug.Log("Quest requirements not met! Current progress:");
-            //foreach (var req in currentQuest.segmentRequirements)
-            //{
-            //    int amount = inventorySystem.GetItemCount(req.segmentId);
-            //    Debug.Log($"Item {req.segmentId}: {amount}/{req.quantityResourse}");
-            //}
-            //return false;
         }
 
         moneyManager.AddMoney(currentQuest.moneyReward);
         foreach (var requirement in currentQuest.segmentRequirements)
-        {
             inventorySystem.RemoveItem(requirement.segmentId, requirement.quantityResourse);
-        }
+
         SoundManager.Instance.Play("QuestComplete");
         currentQuestIndex++;
         StartNextQuest();
-        Debug.Log("������� ������!");
         return true;
+    }
+
+    private void ShowWinnerScreen()
+    {
+        if (winnerObject != null)
+        {
+            questsPackage.SetActive(false);
+            transition.SetTrigger("Start");
+            winnerObject.SetActive(true);
+            winnerButton.gameObject.SetActive(true);
+            winnerText.text = currentQuest.questId.ToString();
+            restartButton.onClick.RemoveAllListeners();
+            restartButton.onClick.AddListener(RestartScene);
+        }
+        StartCoroutine(PlayVictorySoundAfterDelay());
     }
 
     private void HandleFailedQuest()
     {
         SoundManager.Instance.Play("Lose");
-        Debug.Log("GAME OVER NAHER");
-        // ���������� Game Over ������
         if (gameOverObject != null)
         {
             transition.SetTrigger("Start");
             gameOverObject.SetActive(true);
             restartButton.gameObject.SetActive(true);
-
-
-            // ������������� ����� � ����������� � ������� ������
-            if (gameOverText != null)
-            {
-                gameOverText.text = currentQuest.questId.ToString();
-
-                foreach (var req in currentQuest.segmentRequirements)
-                {
-                    int currentAmount = inventorySystem.GetItemCount(req.segmentId);
-                    //gameOverText.text += $"- Item {req.segmentId}: {currentAmount}/{req.quantityResourse}\n";
-                }
-            }
-
-            // ���������� ������ ��������
-            if (restartButton != null)
-            {
-                restartButton.onClick.RemoveAllListeners();
-                restartButton.onClick.AddListener(RestartScene);
-            }
+            gameOverText.text = currentQuest.questId.ToString();
+            restartButton.onClick.RemoveAllListeners();
+            restartButton.onClick.AddListener(RestartScene);
         }
     }
 
-
-    public void GameendAnimStart()
+    private IEnumerator PlayVictorySoundAfterDelay()
     {
-        //��� ���� ������� ���� ��� ������� �������� ����� ����
-        transition.SetTrigger("Start");
-    }
-    public void RestartScene()
-    {
-        transition2.SetTrigger("TriggerRestart");
-        StartCoroutine(RestartAnimationCooldown());
-        //SoundManager.Instance.Play("ButtonClick");
-        //UnityEngine.SceneManagement.SceneManager.LoadScene(
-        //    UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
-    }
-
-
-    private IEnumerator RestartAnimationCooldown()
-    {
-        transition2.SetTrigger("TriggerRestart");
-
-        // ���� ���������� ��������
-        yield return new WaitForSeconds(animationRestartCooldown);
-
-        // ������������� �����
-        SoundManager.Instance.Play("OnButtonClick");
-        UnityEngine.SceneManagement.SceneManager.LoadScene(
-            UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
-
+        yield return new WaitForSeconds(2f);
+        SoundManager.Instance.Play("Victory");
     }
 
     private IEnumerator CarExportTimer()
     {
         yield return new WaitForSeconds(10f);
-
-        // �������� ��������� CarExportTravel � ������������� ������
         CarExportTravel carExport = FindObjectOfType<CarExportTravel>();
         if (carExport != null)
-        {
             carExport.StopCarAtCurrentPosition();
-        }
-
         HandleFailedQuest();
     }
 
-    private void Update()
+    public void RestartScene()
     {
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    if (currentQuest != null && currentQuest.segmentRequirements.Count > 0)
-        //    {
-        //        AddProgress(currentQuest.segmentRequirements[0].segmentId, 1);
-        //    }
-        //}
+        transition2.SetTrigger("TriggerRestart");
+        StartCoroutine(RestartAnimationCooldown());
+    }
 
-        //���� ��������� ��� �� � �����!!!!
-        if (attemptsToComplete == 4)
-        {
-            attempt1.SetActive(true);
-            attempt2.SetActive(true);
-            attempt3.SetActive(true);
-            attempt4.SetActive(true);
-        }
-        if (attemptsToComplete == 3)
-        {
-            attempt4.SetActive(false);
-        }
-        if (attemptsToComplete == 2)
-        {
-            attempt3.SetActive(false);
-        }
-        if (attemptsToComplete == 1)
-        {
-            attempt2.SetActive(false);
-        }
-        if (attemptsToComplete == 0)
-        {
-            attempt1.SetActive(false);
-        }
-
+    private IEnumerator RestartAnimationCooldown()
+    {
+        transition2.SetTrigger("TriggerRestart");
+        yield return new WaitForSeconds(animationRestartCooldown);
+        SoundManager.Instance.Play("OnButtonClick");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
 
@@ -376,14 +306,8 @@ public class QuestProgress
         foreach (var requirement in QuestData.segmentRequirements)
         {
             if (!inventory.HasEnoughItems(requirement.segmentId, requirement.quantityResourse))
-            {
                 return false;
-            }
         }
         return true;
     }
 }
-
-
-
-
