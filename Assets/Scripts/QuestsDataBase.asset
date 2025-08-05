@@ -18,6 +18,9 @@ MonoBehaviour:
     - segmentId: 1
       segmentImage: {fileID: 21300000, guid: c60a8da2b0a46c94c9d5f5d6afc7fc08, type: 3}
       quantityResourse: 5
+    - segmentId: 2
+      segmentImage: {fileID: 21300000, guid: b5e18bbacee45354c928af33111aafc2, type: 3}
+      quantityResourse: 2
     moneyReward: 55
     attempsToComplete: 4
   - questId: 2
@@ -32,6 +35,12 @@ MonoBehaviour:
     - segmentId: 3
       segmentImage: {fileID: 21300000, guid: 67f57bf7c0a6782499ce3eac8f24f89a, type: 3}
       quantityResourse: 7
+    - segmentId: 1
+      segmentImage: {fileID: 21300000, guid: c60a8da2b0a46c94c9d5f5d6afc7fc08, type: 3}
+      quantityResourse: 4
+    - segmentId: 2
+      segmentImage: {fileID: 21300000, guid: b5e18bbacee45354c928af33111aafc2, type: 3}
+      quantityResourse: 4
     moneyReward: 30
     attempsToComplete: 4
   - questId: 4
