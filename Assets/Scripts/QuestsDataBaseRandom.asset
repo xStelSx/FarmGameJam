@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbef1a38556f18c4fb441c674ea84eaf, type: 3}
+  m_Name: QuestsDataBaseRandom
+  m_EditorClassIdentifier: 
+  questStructures:
+  - questId: 0
+    segmentRequirements:
+    - segmentId: 1
+      segmentImage: {fileID: 21300000, guid: c60a8da2b0a46c94c9d5f5d6afc7fc08, type: 3}
+      quantityResourse: 5
+    moneyReward: 50
+    attempsToComplete: 4
+  - questId: 1
+    segmentRequirements:
+    - segmentId: 2
+      segmentImage: {fileID: 21300000, guid: b5e18bbacee45354c928af33111aafc2, type: 3}
+      quantityResourse: 5
+    moneyReward: 50
+    attempsToComplete: 4
+  - questId: 2
+    segmentRequirements:
+    - segmentId: 3
+      segmentImage: {fileID: 21300000, guid: 67f57bf7c0a6782499ce3eac8f24f89a, type: 3}
+      quantityResourse: 5
+    moneyReward: 50
+    attempsToComplete: 4
+  - questId: 3
+    segmentRequirements:
+    - segmentId: 4
+      segmentImage: {fileID: 21300000, guid: d81e9d28b32359946b61f6f95e4967a1, type: 3}
+      quantityResourse: 5
+    moneyReward: 50
+    attempsToComplete: 4
+  - questId: 4
+    segmentRequirements:
+    - segmentId: 5
+      segmentImage: {fileID: 21300000, guid: 83925e8aea6d8ba48b91e00901bf7081, type: 3}
+      quantityResourse: 5
+    moneyReward: 50
+    attempsToComplete: 4
+  - questId: 5
+    segmentRequirements:
+    - segmentId: 6
+      segmentImage: {fileID: 21300000, guid: fcfc640989004574da2a21c923ca0b8c, type: 3}
+      quantityResourse: 5
+    moneyReward: 50
+    attempsToComplete: 4
+  - questId: 6
+    segmentRequirements:
+    - segmentId: 7
+      segmentImage: {fileID: 21300000, guid: b286ea4e4b446c548a6cbf7192e7b173, type: 3}
+      quantityResourse: 5
+    moneyReward: 50
+    attempsToComplete: 4
+  - questId: 7
+    segmentRequirements:
+    - segmentId: 8
+      segmentImage: {fileID: 21300000, guid: bc45c6cd5de830b459d11f98c80e10bd, type: 3}
+      quantityResourse: 5
+    moneyReward: 50
+    attempsToComplete: 4
+  - questId: 8
+    segmentRequirements:
+    - segmentId: 9
+      segmentImage: {fileID: 21300000, guid: c0c992ad5681594469fafd9b6f5a9ec7, type: 3}
+      quantityResourse: 5
+    moneyReward: 50
+    attempsToComplete: 4
+  - questId: 9
+    segmentRequirements:
+    - segmentId: 10
+      segmentImage: {fileID: 21300000, guid: 66758aab8c61e5b4bb33581e33737dac, type: 3}
+      quantityResourse: 5
+    moneyReward: 50
+    attempsToComplete: 4
+  - questId: 10
+    segmentRequirements:
+    - segmentId: 11
+      segmentImage: {fileID: 21300000, guid: 0b3e5029014e48e4882b0a93c7aaa610, type: 3}
+      quantityResourse: 5
+    moneyReward: 50
+    attempsToComplete: 4
+  - questId: 11
+    segmentRequirements:
+    - segmentId: 12
+      segmentImage: {fileID: 21300000, guid: dfdf977b912e26741bc423123c950ac5, type: 3}
+      quantityResourse: 5
+    moneyReward: 50
+    attempsToComplete: 4

@@ -15,7 +15,8 @@ public class GlobalTimer : MonoBehaviour
     [SerializeField] private GameObject PausePanel;
     [SerializeField] public InventorySystem inventorySystem;
 
-    [SerializeField] public QuestManager questManager;
+    [SerializeField] public QuestManager questManagerr;
+    [SerializeField] public RandomQuestManager questManager;
 
     [SerializeField] private MoneyManager moneyManager;
 
