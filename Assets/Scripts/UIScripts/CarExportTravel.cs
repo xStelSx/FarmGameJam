@@ -10,7 +10,8 @@ public class CarExportTravel : MonoBehaviour
     [SerializeField] private Vector2 endPosition;
     [SerializeField] private GlobalTimer globalTimer;
     [SerializeField] private Image objectImage;
-    [SerializeField] private QuestManager questManager;
+    [SerializeField] private QuestManager questManagerr;
+    [SerializeField] private RandomQuestManager questManager;
 
     private bool isAnimating = false;
     private Coroutine animationCoroutine;
